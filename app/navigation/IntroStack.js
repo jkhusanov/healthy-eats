@@ -8,5 +8,7 @@ const IntroStack = StackNavigator({
   },
 },
 
+
+
 );
 export default IntroStack;
