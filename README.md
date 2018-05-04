@@ -13,19 +13,19 @@
   HealthyEats is a tool to get food recipes based on food photo
 </p>
 
-### [Demo - Try it on Expo](https://exp.host/@jkhusanov/)
+### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)
 
 
 ## TODO
   - [x] Create the project and push it to the remote repository
-  - [ ] Implement navigation and initial screens
-  - [ ] Implement Intro Slider UI 
-  - [ ] Implement Main Camera screen UI 
+  - [x] Implement navigation and initial screens
+  - [ ] Implement **IntroScreen** Slider UI 
+  - [ ] Implement main **TakePicture** screen UI 
     - [ ] Use [Clarifai](https://clarifai.com/blog/what-food-is-this-clarifais-food-recognition-technology-can-tell-you) food recognition model and implement full dynamic functionality
-  - [ ] Implement FoodList screen UI with snap-carousel
+  - [ ] Implement **FoodList** screen UI with snap-carousel
     - [ ] Use [Yummly Recipe API](https://developer.yummly.com/documentation) to get food recipe based on ingredients, and we will try to show relevant food based on ingredients.
-  - [ ] Implement Recipe screen using Yummly API
-  - [ ] Implement SavedRecipes screen
+  - [ ] Implement **FoodRecipe** screen using Yummly API
+  - [ ] Implement **SavedRecipes** screen
     - [ ] Use Yummly API
     to get dynamic data for recipes
   - [ ] :star: **Bonus:** Share feature
