@@ -5,6 +5,7 @@ import Onboarding from 'react-native-onboarding-swiper';
 import OnBoard from '../screens/OnBoarding';
 
 
+
 export default class IntroScreen extends React.Component {
   static navigationOptions = {
     header: null,

@@ -4,9 +4,9 @@ import { Button, Icon } from 'react-native-elements';
 import { Alert, StatusBar } from 'react-native';
 
 import Onboarding from 'react-native-onboarding-swiper'; // Version can be specified in package.json
-import TACO from '../../assets/taco.jpg';
-import SUSHI from '../../assets/sushi.png';
-import SALAD from '../../assets/salad.png';
+import TACO from '../../assets/firstPhoto.png';
+import SUSHI from '../../assets/secondPhoto.png';
+import SALAD from '../../assets/thirdPhoto.png';
 
 
 const OnBoard = ({navigation}) => (
@@ -15,25 +15,27 @@ const OnBoard = ({navigation}) => (
       onDone={()  => navigation.navigate('HomeTabs') }
       pages={[
         {
-          backgroundColor: '#03A9F4',
+          backgroundColor: '#fff',
           image: <Image source={TACO}  style={styles.logo}/>,
           title: 'Discover what is in your food',
-          subtitle: 'We will help you find delicious food :)',
+          subtitle: 'Our smart camera analyzes the ingredients! :)',
         },
         
         {
-          title: 'Create Recipies with Ease',
-          backgroundColor: '#2B2E4A',
+          textColor: 'red',
+          title: 'Choose a Recipe',
+          backgroundColor: '#fff',
           image: <Image source={SUSHI} style={styles.logo}/>,
-          subtitle: 'Our smart camera analyzes the ingredients!',
+          subtitle: 'Choose your favorite food, and see full details on the preparation.',
+          
         
         },
         
         {
-            title: 'Have fun!',
-            backgroundColor: '#E84545',
+            title: 'Cook it with Ease and Enjoy!',
+            backgroundColor: '#fff',
             image: <Image source={SALAD} style={styles.logo}/>,
-            subtitle: '',
+            subtitle: 'Your food is ready.',
           
         }
     ]}
