@@ -47,6 +47,7 @@ export default class TakePictureScreen extends React.Component {
     let result = await mediaMethod({
       allowsEditing: true,
       aspect: [4, 3],
+      base64: true,
     });
 
     console.log(result);
@@ -99,15 +100,6 @@ export default class TakePictureScreen extends React.Component {
         </View>
         {image &&
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-        <Button
-          title={'Navigate to result'}
-          containerViewStyle={{ marginTop: 20 }}
-          backgroundColor={'#c84343'}
-          borderRadius={5}
-          textStyle={{ color: 'white' }}
-          onPress={() => this.props.navigation.navigate('RecognitionResult')}
-        // onPress={this.getCameraAsync}
-        />
       </View>
     )
   }

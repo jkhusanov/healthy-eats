@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert, ImageEditor, ImageStore } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
@@ -32,17 +32,20 @@ export default class RecognitionResultScreen extends React.Component {
   async clarifaiCall() {
     this.setState({ isLoading: true })
     const {foodImage} = this.state
-    console.log(foodImage)
+    // console.log(foodImage)
+
+
+
     const Clarifai = require('clarifai');
     let responseJSON = null;
 
     const app = new Clarifai.App({ apiKey: 'a751e448217d4364a555a0e2d6d59006' });
-    app.models.predict(Clarifai.FOOD_MODEL, "https://samples.clarifai.com/food.jpg").then(
+    app.models.predict(Clarifai.FOOD_MODEL, {base64: foodImage.base64}).then(
       async response => {
         // do something with response
         console.log(response)
-        let responseJSON = response
-        console.log("should be object ", responseJSON)
+        responseJSON = response
+        // console.log("should be object ", responseJSON)
         this.setState({
           isLoading: false,
           prediction: responseJSON.outputs[0]
@@ -51,6 +54,8 @@ export default class RecognitionResultScreen extends React.Component {
       function (err) {
         // there was an error
         console.log(err)
+        Alert.alert('Unable to get you food ingredients', `Reason.. ${err.status.description}!`)
+
       }
     );
 
@@ -72,7 +77,18 @@ export default class RecognitionResultScreen extends React.Component {
     console.log("parsed " + prediction.data.concepts[1].name)
     return (
       <View style={styles.container}>
-        <Text>This is RecognitionResultScreen uses Clarifai</Text>
+        <Text style={{paddingBottom: 50}}>This is RecognitionResultScreen uses Clarifai</Text>
+        {foodImage &&
+          <Image source={{ uri: foodImage.uri }} style={{ width: 200, height: 200 }} />}
+          <View>
+            <Text>{prediction.data.concepts[0].name}: {prediction.data.concepts[0].value}%</Text>
+            <Text>{prediction.data.concepts[1].name}: {prediction.data.concepts[1].value}%</Text>
+            <Text>{prediction.data.concepts[2].name}: {prediction.data.concepts[2].value}%</Text>
+            <Text>{prediction.data.concepts[3].name}: {prediction.data.concepts[3].value}%</Text>
+            <Text>{prediction.data.concepts[4].name}: {prediction.data.concepts[4].value}%</Text>
+            <Text>{prediction.data.concepts[5].name}: {prediction.data.concepts[5].value}%</Text>
+            <Text>Much more coming soon...</Text>
+          </View>
         <Button
           title={'Get Food based on ingredients'}
           containerViewStyle={{ marginTop: 20 }}
@@ -81,8 +97,7 @@ export default class RecognitionResultScreen extends React.Component {
           textStyle={{ color: 'white' }}
           onPress={() => this.props.navigation.navigate('FoodList')}
         />
-        {foodImage &&
-          <Image source={{ uri: foodImage.uri }} style={{ width: 200, height: 200 }} />}
+
       </View>
 
     );

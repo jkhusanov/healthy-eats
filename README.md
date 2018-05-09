@@ -21,7 +21,7 @@
   - [x] Implement navigation and initial screens
   - [ ] Implement **IntroScreen** Slider UI 
   - [ ] Implement main **TakePicture** screen UI 
-    - [ ] Use [Clarifai](https://clarifai.com/blog/what-food-is-this-clarifais-food-recognition-technology-can-tell-you) food recognition model and implement full dynamic functionality
+    - [x] Use [Clarifai](https://clarifai.com/blog/what-food-is-this-clarifais-food-recognition-technology-can-tell-you) food recognition model and implement full dynamic functionality
   - [ ] Implement **FoodList** screen UI with snap-carousel
     - [ ] Use [Yummly Recipe API](https://developer.yummly.com/documentation) to get food recipe based on ingredients, and we will try to show relevant food based on ingredients.
   - [ ] Implement **FoodRecipe** screen using Yummly API
