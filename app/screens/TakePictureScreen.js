@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { ImagePicker } from 'expo';
+import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
+import Clarifai from 'clarifai'
 
 
 export default class TakePictureScreen extends React.Component {
@@ -15,28 +16,12 @@ export default class TakePictureScreen extends React.Component {
     },
     headerStyle: { backgroundColor: '#FAFAFA', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
-  state = {
-    image: null,
-  };
-  componentDidMount () {
-    process.nextTick = setImmediate;
-    this.clarifaiCall()
-  } 
-
-  clarifaiCall() {
-    const Clarifai = require('clarifai');
-
-    const app = new Clarifai.App({ apiKey: 'a751e448217d4364a555a0e2d6d59006' });
-    app.models.predict(Clarifai.FOOD_MODEL, "https://samples.clarifai.com/food.jpg").then(
-      function (response) {
-        // do something with response
-        console.log(response)
-      },
-      function (err) {
-        // there was an error
-      }
-    );
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      image: null,
+      isLoading: false,
+    };
   }
 
   getCameraAsync = async (mediaType) => {
@@ -49,10 +34,12 @@ export default class TakePictureScreen extends React.Component {
     if (status === 'granted') {
       return this._pickImage(mediaType);
     } else {
-      throw new Error('Camera permission not granted');
+      throw new Error('Camera and Photo permission not granted');
     }
   }
   _pickImage = async (mediaType) => {
+    const { navigate } = this.props.navigation
+
     const mediaMethod = (mediaType === 'camera'
       ? ImagePicker.launchCameraAsync
       : ImagePicker.launchImageLibraryAsync);
@@ -64,12 +51,25 @@ export default class TakePictureScreen extends React.Component {
 
     console.log(result);
 
+
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      navigate('RecognitionResult', { foodImage: result})
     }
   };
 
-  render() {
+  loadingView = () => {
+    return (
+      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.loadingView}>
+        <View style={styles.activityIndicatorAndButtonContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      </LinearGradient>
+    )
+  }
+  photoSend = () => {
+    const {isLoading } = this.state
+
     let { image } = this.state;
     return (
       <View style={styles.container}>
@@ -109,6 +109,15 @@ export default class TakePictureScreen extends React.Component {
         // onPress={this.getCameraAsync}
         />
       </View>
+    )
+  }
+
+  render() {
+
+    const { prediction, isLoading } = this.state
+    console.log(isLoading)
+    return (
+      (isLoading ? this.loadingView() : this.photoSend())
     );
   }
 }
@@ -134,5 +143,10 @@ const styles = StyleSheet.create({
   },
   photoLabel: {
     color: '#737373'
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
