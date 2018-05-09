@@ -31,7 +31,7 @@ export default class RecognitionResultScreen extends React.Component {
 
   async clarifaiCall() {
     this.setState({ isLoading: true })
-    const {foodImage} = this.state
+    const { foodImage } = this.state
     // console.log(foodImage)
 
 
@@ -40,7 +40,7 @@ export default class RecognitionResultScreen extends React.Component {
     let responseJSON = null;
 
     const app = new Clarifai.App({ apiKey: 'a751e448217d4364a555a0e2d6d59006' });
-    app.models.predict(Clarifai.FOOD_MODEL, {base64: foodImage.base64}).then(
+    app.models.predict(Clarifai.FOOD_MODEL, { base64: foodImage.base64 }).then(
       async response => {
         // do something with response
         console.log(response)
@@ -70,6 +70,28 @@ export default class RecognitionResultScreen extends React.Component {
       </LinearGradient>
     )
   }
+
+  displayValue(ingredient, index) {
+    return (
+      <View
+        key={index}>
+        <Text>{ingredient.name} {ingredient.value}%</Text>
+        {console.log(ingredient.name)}
+      </View>
+    )
+  }
+  predictionEdit = (prediction) => {
+    return (
+    <View styles={{flex: 1}}>
+      {
+        prediction.data.concepts.map((ingredient, index) => {
+          this.displayValue(ingredient, index)
+        })
+      }
+    </View>
+    )
+
+  }
   predictionResult = () => {
     const { prediction, isLoading } = this.state
 
@@ -77,18 +99,19 @@ export default class RecognitionResultScreen extends React.Component {
     console.log("parsed " + prediction.data.concepts[1].name)
     return (
       <View style={styles.container}>
-        <Text style={{paddingBottom: 50}}>This is RecognitionResultScreen uses Clarifai</Text>
+        <Text style={{ paddingBottom: 50 }}>This is RecognitionResultScreen uses Clarifai</Text>
         {foodImage &&
           <Image source={{ uri: foodImage.uri }} style={{ width: 200, height: 200 }} />}
-          <View>
-            <Text>{prediction.data.concepts[0].name}: {prediction.data.concepts[0].value}%</Text>
-            <Text>{prediction.data.concepts[1].name}: {prediction.data.concepts[1].value}%</Text>
-            <Text>{prediction.data.concepts[2].name}: {prediction.data.concepts[2].value}%</Text>
-            <Text>{prediction.data.concepts[3].name}: {prediction.data.concepts[3].value}%</Text>
-            <Text>{prediction.data.concepts[4].name}: {prediction.data.concepts[4].value}%</Text>
-            <Text>{prediction.data.concepts[5].name}: {prediction.data.concepts[5].value}%</Text>
-            <Text>Much more coming soon...</Text>
-          </View>
+        <View>
+          <Text>{prediction.data.concepts[0].name}: {prediction.data.concepts[0].value.toPrecision(3)}%</Text>
+            <Text>{prediction.data.concepts[1].name}: {prediction.data.concepts[1].value.toPrecision(3)}%</Text>
+            <Text>{prediction.data.concepts[2].name}: {prediction.data.concepts[2].value.toPrecision(3)}%</Text>
+            <Text>{prediction.data.concepts[3].name}: {prediction.data.concepts[3].value.toPrecision(3)}%</Text>
+            <Text>{prediction.data.concepts[4].name}: {prediction.data.concepts[4].value.toPrecision(3)}%</Text>
+            <Text>{prediction.data.concepts[5].name}: {prediction.data.concepts[5].value.toPrecision(3)}%</Text>
+          {/* {this.predictionEdit(prediction)} */}
+          <Text>Much more coming soon...</Text>
+        </View>
         <Button
           title={'Get Food based on ingredients'}
           containerViewStyle={{ marginTop: 20 }}
