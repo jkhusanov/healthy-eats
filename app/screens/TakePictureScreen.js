@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert, Dimensions } from 'react-native';
+import { Button, Icon, Tile } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import Clarifai from 'clarifai'
 
+const { width } = Dimensions.get('window');
 
 export default class TakePictureScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -54,8 +55,8 @@ export default class TakePictureScreen extends React.Component {
 
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
-      navigate('RecognitionResult', { foodImage: result})
+      this.setState({ image: result});
+      navigate('RecognitionResult', { foodImage: result })
     }
   };
 
@@ -68,8 +69,9 @@ export default class TakePictureScreen extends React.Component {
       </LinearGradient>
     )
   }
-  photoSend = () => {
-    const {isLoading } = this.state
+  photoSend() {
+    const { isLoading } = this.state
+    const { navigate } = this.props.navigation
 
     let { image } = this.state;
     return (
@@ -99,7 +101,19 @@ export default class TakePictureScreen extends React.Component {
           </View>
         </View>
         {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        <Tile
+          imageSrc={{ uri: image.uri }}
+          imageContainerStyle={styles.imageStyle}
+          title={'Recent food'}
+          titleStyle={styles.nameLabel}
+          featured
+          activeOpacity={0.6}
+          caption={'Analyze it again'}
+          captionStyle={styles.foodCaptionStyle}
+          containerStyle={styles.imageContainer}
+          onPress={() => navigate('RecognitionResult', { foodImage: image })}
+        >
+        </Tile>}
       </View>
     )
   }
@@ -140,5 +154,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    paddingVertical: 35,
+
+  },
+  imageStyle: {
+    height: width / 1.5,
+    width: width / 1.2,
+    borderRadius: 25,
+  },
+  nameLabel: {
+    fontSize: 30,
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
+    fontWeight: 'bold'
+  }, 
+  foodCaptionStyle: {
+    fontSize: 18,
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -2, height: 1 },
+    textShadowRadius: 5,
   },
 });

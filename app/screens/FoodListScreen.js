@@ -12,7 +12,20 @@ export default class FoodListScreen extends React.Component {
     },
     headerStyle: { backgroundColor: '#FAFAFA', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
+  constructor(props) {
+    super(props)
+    const ingredientsList = props.navigation.state.params && props.navigation.state.params.ingredientsList
+    console.log("Correct ingredientsList: ", ingredientsList)
+    this.state = {
+      ingredientsList: ingredientsList || null,
+      isLoading: false,
+
+    };
+  }
   render() {
+    const {ingredientsList} = this.state
+    console.log("Correct list: ", ingredientsList)
+
     return (
       <View style={styles.container}>
         <Text>This is FoodListScreen uses Yummly and it's snap carousel </Text>
