@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert, ImageEditor, ImageStore } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert, ImageEditor, ImageStore, Dimensions, ScrollView } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import Clarifai from 'clarifai'
+
+const { width } = Dimensions.get('window');
+let ingredientsList = []
 
 
 export default class RecognitionResultScreen extends React.Component {
@@ -73,56 +76,69 @@ export default class RecognitionResultScreen extends React.Component {
 
   displayValue(ingredient, index) {
     return (
-      <View
-        key={index}>
-        <Text>{ingredient.name} {ingredient.value}%</Text>
-        {console.log(ingredient.name)}
+      <View key={index}>
+        {ingredient.value > 0.70 &&
+          <View style={styles.predictionInfoContainer}>
+            <View>
+              <Text style={styles.ingredientLabel}>{ingredient.name}</Text>
+            </View>
+            <View>
+              <Text style={styles.percentLabel}>{(ingredient.value * 100).toPrecision(3)}</Text>
+            </View>
+          </View>
+        }
       </View>
+
     )
   }
-  predictionEdit = (prediction) => {
+  renderPrediction(){
+    const { prediction } = this.state
+
     return (
-    <View styles={{flex: 1}}>
-      {
-        prediction.data.concepts.map((ingredient, index) => {
-          this.displayValue(ingredient, index)
-        })
-      }
-    </View>
+      <View>
+        <View style={styles.predictionTableContainer}>
+          <Text style={styles.predictionTableLabel}>PREDICTED INGREDIENT</Text>
+          <Text style={styles.predictionTableLabel}>ACCURACY %</Text>
+        </View>
+        {
+          prediction.data.concepts.map((ingredient, index) => {
+            {ingredient.value > 0.70 && ingredientsList.push(ingredient.name)} 
+            return this.displayValue(ingredient, index)
+          })
+          
+        }
+
+      </View>
     )
 
   }
-  predictionResult = () => {
+  predictionResult(){
     const { prediction, isLoading } = this.state
+    console.log("IngredientsList", ingredientsList)
 
     let { foodImage } = this.state;
-    console.log("parsed " + prediction.data.concepts[1].name)
     return (
-      <View style={styles.container}>
-        <Text style={{ paddingBottom: 50 }}>This is RecognitionResultScreen uses Clarifai</Text>
+      <ScrollView style={styles.container}>
         {foodImage &&
-          <Image source={{ uri: foodImage.uri }} style={{ width: 200, height: 200 }} />}
-        <View>
-          <Text>{prediction.data.concepts[0].name}: {prediction.data.concepts[0].value.toPrecision(3)}%</Text>
-            <Text>{prediction.data.concepts[1].name}: {prediction.data.concepts[1].value.toPrecision(3)}%</Text>
-            <Text>{prediction.data.concepts[2].name}: {prediction.data.concepts[2].value.toPrecision(3)}%</Text>
-            <Text>{prediction.data.concepts[3].name}: {prediction.data.concepts[3].value.toPrecision(3)}%</Text>
-            <Text>{prediction.data.concepts[4].name}: {prediction.data.concepts[4].value.toPrecision(3)}%</Text>
-            <Text>{prediction.data.concepts[5].name}: {prediction.data.concepts[5].value.toPrecision(3)}%</Text>
-          {/* {this.predictionEdit(prediction)} */}
-          <Text>Much more coming soon...</Text>
+          <View style={styles.imageContainer}><Image source={{ uri: foodImage.uri }} style={styles.imageStyle} /></View>}
+        <View styles={styles.predictionContainer}>
+          {this.renderPrediction()}
         </View>
         <Button
-          title={'Get Food based on ingredients'}
-          containerViewStyle={{ marginTop: 20 }}
-          backgroundColor={'#c84343'}
-          borderRadius={5}
+          title={'Start Cooking!'}
+          containerViewStyle={{ marginVertical: 10, alignItems: 'center' }}
           textStyle={{ color: 'white' }}
-          onPress={() => this.props.navigation.navigate('FoodList')}
+          buttonStyle={{
+            backgroundColor: '#1ABC9C',
+            width: 200,
+            height: 45,
+            borderColor: "transparent",
+            borderWidth: 0,
+            borderRadius: 5,
+          }}
+          onPress={() => this.props.navigation.navigate('FoodList', {ingredientsList: ingredientsList})}
         />
-
-      </View>
-
+      </ScrollView>
     );
   }
   render() {
@@ -139,12 +155,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   loadingView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  predictionContainer: {
+    // flex: 1,
+  },
+  predictionInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#aaaaaa',
+    marginBottom: 10,
+  },
+  predictionTableContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
+  predictionTableLabel: {
+    color: '#B4B7BA',
+    fontSize: 14,
+  },
+  ingredientLabel: {
+    fontSize: 18,
+    color: '#2E4A62',
+    fontWeight: 'bold'
+  },
+  percentLabel: {
+    fontSize: 18,
+    color: '#2E4A62'
+  },
+  imageContainer: {
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  imageStyle: {
+    height: width / 1.5,
+    width: width/ 1.2, 
+    borderRadius: 25,
   },
 });
