@@ -46,7 +46,6 @@ export default class FoodListScreen extends React.Component {
     const ingredientsList = props.navigation.state.params && props.navigation.state.params.ingredientsList
     console.log("Correct ingredientsList: ", ingredientsList)
     this.state = {
-      ingredientsList: ingredientsList || null,
       imagesLoaded: false,
       foodImages: null,
       API_URL: 'http://api.yummly.com',
@@ -54,19 +53,32 @@ export default class FoodListScreen extends React.Component {
       APP_ID: 'eb4e23c7',
       RES_SEARCH_URL1: '&_app_key=',
       API_KEY: '851038fb4920d6b523e47c79320c858e',
-      search: 'Roasted Root Vegetables with Tomatoes and Kale',
+      search: ingredientsList[0] || null,
+      allowedIngredient: ingredientsList || null,
       picture: '&requirePictures=true',
       isLoading: false,
 
     };
   }
-  
-  async _getYummlyImages(search) {
-    const {API_URL, RES_SEARCH_URL, APP_ID, API_KEY, picture } = this.state;
-    this.setState({ imagesLoaded: true });
+  componentDidMount() {
+    //When the component is loaded
+    this._getYummlyImages()
 
+  }
+  
+  async _getYummlyImages() {
+    const {API_URL, RES_SEARCH_URL, APP_ID, API_KEY, search, allowedIngredient, picture } = this.state;
+    this.setState({ imagesLoaded: true });
+    console.log(search)
     try {
-      let response = await fetch(`${API_URL}${RES_SEARCH_URL}_app_id=${APP_ID}&_app_key=${API_KEY}&q=${search}${picture}`,
+      let searchItems = `&allowedIngredient[]=${allowedIngredient[0]}`
+      for(let i = 0; i < allowedIngredient.length && i<5; i++) {
+        if(allowedIngredient[i] != 'chicken' && allowedIngredient[i]!='pork' && allowedIngredient[i]!='beef') {
+          searchItems += `&allowedIngredient[]=${allowedIngredient[i]}`
+        }
+      }
+      console.log(searchItems)
+      let response = await fetch(`${API_URL}${RES_SEARCH_URL}_app_id=${APP_ID}&_app_key=${API_KEY}${searchItems}${picture}`,
         {
           method: 'GET',
           headers: {
@@ -81,9 +93,9 @@ export default class FoodListScreen extends React.Component {
         // console.log("MATCHES-LENGTH", responseJSON.matches.length)
 
         if (typeof responseJSON.matches != 'undefined' && responseJSON.matches.length > 0) {
-          food_image = responseJSON.matches[0]
+          foodImages = responseJSON
+          console.log(foodImages)
         }
-        // console.log(imagesLoaded)
         // console.log("not loaded food",foodImages)
       } else {
         const error = responseJSON.message
@@ -104,7 +116,7 @@ export default class FoodListScreen extends React.Component {
 
   render() {
     const {ingredientsList} = this.state
-    console.log("Correct list: ", ingredientsList)
+    // console.log("Correct list: ", ingredientsList)
 
     return (
       <View style={styles.container}>

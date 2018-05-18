@@ -102,7 +102,7 @@ export default class RecognitionResultScreen extends React.Component {
         </View>
         {
           prediction.data.concepts.map((ingredient, index) => {
-            {ingredient.value > 0.70 && ingredientsList.push(ingredient.name)} 
+            {ingredient.value > 0.85 && ingredientsList.push(ingredient.name)} 
             return this.displayValue(ingredient, index)
           })
           
