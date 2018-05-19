@@ -18,6 +18,7 @@ import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import FavSlide from '../components/FavSlide';
 
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 function wp(percentage) {
@@ -60,7 +61,7 @@ export default class FoodListScreen extends React.Component {
 
     };
   }
-  componentDidMount() {
+  componentWillMount() {
     //When the component is loaded
     this._getYummlyImages()
 
@@ -73,7 +74,7 @@ export default class FoodListScreen extends React.Component {
     try {
       let searchItems = `&allowedIngredient[]=${allowedIngredient[0]}`
       for(let i = 0; i < allowedIngredient.length && i<5; i++) {
-        if(allowedIngredient[i] != 'chicken' && allowedIngredient[i]!='pork' && allowedIngredient[i]!='beef') {
+        if(allowedIngredient[i] != 'sweet' && allowedIngredient[i]!='pork' && allowedIngredient[i]!='beef') {
           searchItems += `&allowedIngredient[]=${allowedIngredient[i]}`
         }
       }
@@ -85,18 +86,18 @@ export default class FoodListScreen extends React.Component {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
         });
-
-      let responseJSON = await response.json();
+      
+      let responseJSON = null
 
       if (response.status === 200) {
+        responseJSON = await response.json();
         console.log("Preloaded", responseJSON)
-        // console.log("MATCHES-LENGTH", responseJSON.matches.length)
 
-        if (typeof responseJSON.matches != 'undefined' && responseJSON.matches.length > 0) {
-          foodImages = responseJSON
-          console.log(foodImages)
-        }
-        // console.log("not loaded food",foodImages)
+        this.setState({
+          imagesLoaded: false,
+          foodImages: responseJSON.matches,
+        })
+        // console.log(foodImages)
       } else {
         const error = responseJSON.message
 
@@ -114,13 +115,55 @@ export default class FoodListScreen extends React.Component {
     }
   }
 
+
+  loadingView = () => {
+    return (
+      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.loadingView}>
+        <View style={styles.activityIndicatorAndButtonContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      </LinearGradient>
+    )
+  }
+  _renderItem({ item, index }) {
+    return (
+      <FavSlide
+        item={item}
+        navigation={this.props.navigation}
+      />
+    );
+  }
+  contentView = () => {
+    const { foodImages, imagesLoaded } = this.state
+    console.log("loaded food", foodImages)
+    return (
+      <View style={styles.mainContainer}>
+        <LinearGradient colors={['#536976', '#292E49']} style={styles.mainContainer}>
+          <View style={styles.imageContainer}>
+            {foodImages === null ?
+              this.loadingView() :
+              <Carousel
+                ref={(c) => { this._carousel = c; }}
+                data={foodImages}
+                renderItem={this._renderItem.bind(this)}
+                sliderWidth={sliderWidth}
+                itemWidth={itemWidth}
+                style={styles.carouselContainer}
+              />}
+          </View>
+        </LinearGradient>
+
+      </View>
+    );
+  }
   render() {
     const {ingredientsList} = this.state
     // console.log("Correct list: ", ingredientsList)
 
     return (
-      <View style={styles.container}>
-        <Text>This is FoodListScreen uses Yummly and it's snap carousel </Text>
+      <View style={styles.mainContainer}>
+        {this.contentView()}
+{/*       
         <Button
           title={'Get Recipe'}
           containerViewStyle={{ marginTop: 20 }}
@@ -128,17 +171,29 @@ export default class FoodListScreen extends React.Component {
           borderRadius={5}
           textStyle={{ color: 'white' }}
           onPress={() => this.props.navigation.navigate('FoodRecipe')}
-        />
+        /> */}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+  },
+  loadingView: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIndicatorAndButtonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

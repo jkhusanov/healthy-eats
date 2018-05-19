@@ -6,7 +6,6 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import Clarifai from 'clarifai'
 
 const { width } = Dimensions.get('window');
-let ingredientsList = []
 
 
 export default class RecognitionResultScreen extends React.Component {
@@ -25,6 +24,8 @@ export default class RecognitionResultScreen extends React.Component {
     this.state = {
       isLoading: false,
       foodImage: foodImage || null,
+      prediction: null,
+      ingredientsList: null,
     };
   }
   componentWillMount() {
@@ -41,6 +42,7 @@ export default class RecognitionResultScreen extends React.Component {
 
     const Clarifai = require('clarifai');
     let responseJSON = null;
+    let ingredients = []
 
     const app = new Clarifai.App({ apiKey: 'a751e448217d4364a555a0e2d6d59006' });
     app.models.predict(Clarifai.FOOD_MODEL, { base64: foodImage.base64 }).then(
@@ -49,10 +51,16 @@ export default class RecognitionResultScreen extends React.Component {
         console.log(response)
         responseJSON = response
         // console.log("should be object ", responseJSON)
+        responseJSON.outputs[0].data.concepts.map((ingredient, index) => {
+          {ingredient.value > 0.85 && ingredients.push(ingredient.name)} 
+        })
         this.setState({
           isLoading: false,
-          prediction: responseJSON.outputs[0]
+          prediction: responseJSON.outputs[0],
+          ingredientsList: ingredients
+
         })
+
       },
       function (err) {
         // there was an error
@@ -61,7 +69,6 @@ export default class RecognitionResultScreen extends React.Component {
 
       }
     );
-
   }
 
   loadingView = () => {
@@ -102,7 +109,6 @@ export default class RecognitionResultScreen extends React.Component {
         </View>
         {
           prediction.data.concepts.map((ingredient, index) => {
-            {ingredient.value > 0.85 && ingredientsList.push(ingredient.name)} 
             return this.displayValue(ingredient, index)
           })
           
@@ -113,7 +119,7 @@ export default class RecognitionResultScreen extends React.Component {
 
   }
   predictionResult(){
-    const { prediction, isLoading } = this.state
+    const { prediction, isLoading, ingredientsList } = this.state
     console.log("IngredientsList", ingredientsList)
 
     let { foodImage } = this.state;
