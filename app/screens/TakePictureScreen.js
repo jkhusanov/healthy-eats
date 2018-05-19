@@ -75,7 +75,7 @@ export default class TakePictureScreen extends React.Component {
 
     let { image } = this.state;
     return (
-      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.container}>
+      <LinearGradient colors={['#fff', '#fff']} style={styles.container}>
         <View style={styles.imageShareContainer}>
           <View style={styles.uploadImageContainer}>
             <TouchableOpacity onPress={() => this.getCameraAsync('library')}>

@@ -103,7 +103,7 @@ export default class FoodRecipeScreen extends React.Component {
       },
       {
         key: 4,
-        amount: food.nutritionEstimates[71].value,
+        amount: 400,
         svg: { fill: '#50EBC6' }
       },
       {
@@ -185,7 +185,7 @@ export default class FoodRecipeScreen extends React.Component {
               <View style={styles.foodFact} >
                 <RkText style={styles.title} rkType='xlarge'>{" Nutrition Facts:"}</RkText>
                 <RkText style={styles.ingText} rkType='medium'> {'•  Number Of Servings: ' + food.numberOfServings}</RkText>
-                <RkText style={styles.title1} > {'•  Calories/Serving: ' + food.nutritionEstimates[71].value}</RkText>
+                <RkText style={styles.title1} > {'•  Calories/Serving: 400'}</RkText>
                 <RkText style={styles.foodText} rkType='info'> {'•  Protein: 7 '}</RkText>
                 <RkText style={styles.foodText} rkType='warning'> {'•  Carbs: 108'}</RkText>
                 <RkText style={styles.foodLastText} > {'•  Fat: 70'}</RkText>
