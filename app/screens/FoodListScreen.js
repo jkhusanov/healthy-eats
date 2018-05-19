@@ -18,6 +18,7 @@ import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import FavSlide from '../components/FavSlide';
 
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 function wp(percentage) {
@@ -39,14 +40,13 @@ export default class FoodListScreen extends React.Component {
       fontSize: 20,
       fontWeight: 'bold',
     },
-    headerStyle: { backgroundColor: '#FAFAFA', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
+    headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
   constructor(props) {
     super(props)
     const ingredientsList = props.navigation.state.params && props.navigation.state.params.ingredientsList
     console.log("Correct ingredientsList: ", ingredientsList)
     this.state = {
-      ingredientsList: ingredientsList || null,
       imagesLoaded: false,
       foodImages: null,
       API_URL: 'http://api.yummly.com',
@@ -54,37 +54,50 @@ export default class FoodListScreen extends React.Component {
       APP_ID: 'eb4e23c7',
       RES_SEARCH_URL1: '&_app_key=',
       API_KEY: '851038fb4920d6b523e47c79320c858e',
-      search: 'Roasted Root Vegetables with Tomatoes and Kale',
+      search: ingredientsList[0] || null,
+      allowedIngredient: ingredientsList || null,
       picture: '&requirePictures=true',
       isLoading: false,
 
     };
   }
-  
-  async _getYummlyImages(search) {
-    const {API_URL, RES_SEARCH_URL, APP_ID, API_KEY, picture } = this.state;
-    this.setState({ imagesLoaded: true });
+  componentWillMount() {
+    //When the component is loaded
+    this._getYummlyImages()
 
+  }
+  
+  async _getYummlyImages() {
+    const {API_URL, RES_SEARCH_URL, APP_ID, API_KEY, search, allowedIngredient, picture } = this.state;
+    this.setState({ imagesLoaded: true });
+    console.log(search)
     try {
-      let response = await fetch(`${API_URL}${RES_SEARCH_URL}_app_id=${APP_ID}&_app_key=${API_KEY}&q=${search}${picture}`,
+      let searchItems = `&allowedIngredient[]=${allowedIngredient[0]}`
+      for(let i = 0; i < allowedIngredient.length && i<5; i++) {
+        if(allowedIngredient[i] != 'sweet' && allowedIngredient[i]!='pork' && allowedIngredient[i]!='kebab') {
+          searchItems += `&allowedIngredient[]=${allowedIngredient[i]}`
+        }
+      }
+      console.log(searchItems)
+      let response = await fetch(`${API_URL}${RES_SEARCH_URL}_app_id=${APP_ID}&_app_key=${API_KEY}${searchItems}${picture}`,
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
         });
-
-      let responseJSON = await response.json();
+      
+      let responseJSON = null
 
       if (response.status === 200) {
+        responseJSON = await response.json();
         console.log("Preloaded", responseJSON)
-        // console.log("MATCHES-LENGTH", responseJSON.matches.length)
 
-        if (typeof responseJSON.matches != 'undefined' && responseJSON.matches.length > 0) {
-          food_image = responseJSON.matches[0]
-        }
-        // console.log(imagesLoaded)
-        // console.log("not loaded food",foodImages)
+        this.setState({
+          imagesLoaded: false,
+          foodImages: responseJSON.matches,
+        })
+        // console.log(foodImages)
       } else {
         const error = responseJSON.message
 
@@ -102,31 +115,76 @@ export default class FoodListScreen extends React.Component {
     }
   }
 
+
+  loadingView = () => {
+    return (
+      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.loadingView}>
+        <View style={styles.activityIndicatorAndButtonContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      </LinearGradient>
+    )
+  }
+  _renderItem({ item, index }) {
+    return (
+      <FavSlide
+        item={item}
+        navigation={this.props.navigation}
+      />
+    );
+  }
+  contentView(){
+    const { foodImages, imagesLoaded } = this.state
+    console.log("loaded food", foodImages)
+    return (
+      <View style={styles.mainContainer}>
+        <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.mainContainer}>
+          <View style={styles.imageContainer}>
+            {foodImages === null ?
+              this.loadingView() :
+              <Carousel
+                ref={(c) => { this._carousel = c; }}
+                data={foodImages}
+                renderItem={this._renderItem.bind(this)}
+                sliderWidth={sliderWidth}
+                itemWidth={itemWidth}
+                style={styles.carouselContainer}
+              />}
+          </View>
+        </LinearGradient>
+
+      </View>
+    );
+  }
   render() {
-    const {ingredientsList} = this.state
-    console.log("Correct list: ", ingredientsList)
+    const {ingredientsList, imagesLoaded} = this.state
+    // console.log("Correct list: ", ingredientsList)
 
     return (
-      <View style={styles.container}>
-        <Text>This is FoodListScreen uses Yummly and it's snap carousel </Text>
-        <Button
-          title={'Get Recipe'}
-          containerViewStyle={{ marginTop: 20 }}
-          backgroundColor={'#c84343'}
-          borderRadius={5}
-          textStyle={{ color: 'white' }}
-          onPress={() => this.props.navigation.navigate('FoodRecipe')}
-        />
+      <View style={styles.mainContainer}>
+        {imagesLoaded ? this.loadingView(): this.contentView()}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+  },
+  loadingView: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIndicatorAndButtonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
