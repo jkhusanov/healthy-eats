@@ -16,7 +16,7 @@ export default class RecognitionResultScreen extends React.Component {
       fontSize: 20,
       fontWeight: 'bold',
     },
-    headerStyle: { backgroundColor: '#FAFAFA', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
+    headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
   constructor(props) {
     super(props)

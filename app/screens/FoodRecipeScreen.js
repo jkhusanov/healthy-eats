@@ -1,6 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View, Dimensions, Platform, ScrollView, Linking, flex, Button, WebView, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
+import {
+  RkText,
+  RkCard, RkStyleSheet, RkTheme,
+} from 'react-native-ui-kitten';
+import { PieChart } from 'react-native-svg-charts'
+import { Text } from 'react-native-svg'
+import { Rating, Tile } from 'react-native-elements'
+import { LinearGradient } from 'expo';
 
 export default class FoodRecipeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -10,14 +17,14 @@ export default class FoodRecipeScreen extends React.Component {
       fontSize: 20,
       fontWeight: 'bold',
     },
-    headerStyle: { backgroundColor: '#FAFAFA', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
+    headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
   constructor(props) {
     super(props)
     const foodID = props.navigation.state.params && props.navigation.state.params.foodID
     console.log("Correct foodID: ", foodID)
     this.state = {
-      imagesLoaded: false,
+      isLoading: false,
       foodRecipe: null,
       API_URL: 'http://api.yummly.com',
       RES_SEARCH_URL: '/v1/api/recipe/',
@@ -25,16 +32,17 @@ export default class FoodRecipeScreen extends React.Component {
       APP_ID: 'eb4e23c7',
       RES_SEARCH_URL1: '&_app_key=',
       API_KEY: '851038fb4920d6b523e47c79320c858e',
-      isLoading: false,
-
+      screen: null,
+      description: '',
+      check: false
     };
   }
-  componentDidMount(){
+  componentWillMount() {
     this._getYummlyRecipe()
   }
   async _getYummlyRecipe() {
-    const {API_URL, RES_SEARCH_URL, APP_ID, API_KEY, RECIPE_ID,} = this.state;
-    this.setState({ imagesLoaded: true });
+    const { API_URL, RES_SEARCH_URL, APP_ID, API_KEY, RECIPE_ID, } = this.state;
+    this.setState({ isLoading: true });
 
     try {
       let response = await fetch(`${API_URL}${RES_SEARCH_URL}${RECIPE_ID}?_app_id=${APP_ID}&_app_key=${API_KEY}`,
@@ -44,7 +52,7 @@ export default class FoodRecipeScreen extends React.Component {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
         });
-      
+
       let responseJSON = null
 
       if (response.status === 200) {
@@ -52,8 +60,8 @@ export default class FoodRecipeScreen extends React.Component {
         console.log("Preloaded", responseJSON)
 
         this.setState({
-          imagesLoaded: false,
-          foodRecipe: responseJSON.matches,
+          isLoading: false,
+          foodRecipe: responseJSON,
         })
         console.log(foodRecipe)
       } else {
@@ -65,27 +73,321 @@ export default class FoodRecipeScreen extends React.Component {
         // Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
       }
     } catch (error) {
-      this.setState({ foodRecipe: false, response: error })
+      this.setState({ isLoading: false, response: error })
 
       // console.log(error)
 
       // Alert.alert('Unable to get the feed. Please try again later')
     }
   }
-  render() {
+  recipeRender() {
+    const { foodRecipe } = this.state
+    const food = foodRecipe
+    const { navigate } = this.props.navigation
+    console.log("RecipeLoaded", food)
+    const data = [
+      {
+        key: 1,
+        amount: 108,
+        svg: { fill: '#FFCA28' },
+      },
+      {
+        key: 2,
+        amount: 70,
+        svg: { fill: '#304FFE' }
+      },
+      {
+        key: 3,
+        amount: 7,
+        svg: { fill: '#03A9F4' }
+      },
+      {
+        key: 4,
+        amount: food.nutritionEstimates[71].value,
+        svg: { fill: '#50EBC6' }
+      },
+      {
+        key: 5,
+        amount: food.numberOfServings,
+        svg: { fill: '#000000' }
+      },
+
+
+
+    ]
+    const Labels = ({ slices, height, width }) => {
+      return slices.map((slice, index) => {
+        const { labelCentroid, pieCentroid, data } = slice;
+        return (
+          <Text
+            key={index}
+            x={pieCentroid[0]}
+            y={pieCentroid[1]}
+            fill={'white'}
+            textAnchor={'middle'}
+            alignmentBaseline={'middle'}
+            fontSize={14}
+            stroke={'white'}
+            strokeWidth={0.2}
+          >
+            {data.amount}
+          </Text>
+        )
+      })
+
+    }
+
+
+    let chartBlockStyles = [styles.chartBlock];
+
     return (
-      <View style={styles.container}>
-        <Text>This is FoodRecipeScreen uses Yummly </Text>
-      </View>
+
+      <ScrollView style={styles.root}>
+        <RkCard rkType='backImg'>
+          <Tile
+            imageSrc={{ uri: food.images[0].hostedLargeUrl }}
+            title={food.name}
+            titleStyle={styles.nameLabel}
+            contentContainerStyle={{ height: 100 }}
+            activeOpacity={1}
+            captionStyle={styles.foodCaptionStyle}
+            imageContainerStyle={styles.imageStyle}
+            containerStyle={styles.imageContainer}
+
+          >
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Rating
+                type="custom"
+                readonly
+                ratingColor='#FD9427'
+                startingValue={food.rating}
+                fractions={1}
+                imageSize={20}
+                style={{ marginVertical: 10 }}
+              />
+            </View>
+          </Tile>
+          <View rkCardHeader>
+            <View>
+              <RkText style={styles.title} rkType='large'>{"Ingredients:"}</RkText>
+
+              <RkText rkType='large'></RkText>
+
+              {food.ingredientLines.map((item, key) => (
+                <RkText style={styles.ingText} rkType='medium' key={key} > {"• " + item} </RkText>)
+              )}
+            </View>
+          </View>
+          <View rkCardContent>
+
+            <View style={chartBlockStyles}>
+
+              <View style={styles.foodFact} >
+                <RkText style={styles.title} rkType='xlarge'>{" Nutrition Facts:"}</RkText>
+                <RkText style={styles.ingText} rkType='medium'> {'•  Number Of Servings: ' + food.numberOfServings}</RkText>
+                <RkText style={styles.title1} > {'•  Calories/Serving: ' + food.nutritionEstimates[71].value}</RkText>
+                <RkText style={styles.foodText} rkType='info'> {'•  Protein: 7 '}</RkText>
+                <RkText style={styles.foodText} rkType='warning'> {'•  Carbs: 108'}</RkText>
+                <RkText style={styles.foodLastText} > {'•  Fat: 70'}</RkText>
+
+
+                <PieChart
+                  style={{ height: 225 }}
+                  valueAccessor={({ item }) => item.amount}
+                  data={data}
+                  spacing={3}
+                  outerRadius={'99%'}
+                >
+                  <Labels />
+
+                </PieChart>
+
+
+
+
+              </View>
+
+
+            </View>
+          </View>
+
+
+        </RkCard>
+
+
+
+        <TouchableOpacity style={styles.recipieButton}
+          onPress={() => navigate('Recipe', { restaurantURL: food.source.sourceRecipeUrl })}>
+          <View style={styles.recipieButtonView}>
+            <RkText style={styles.recipieText} rkType='medium'> View Recipe </RkText>
+          </View>
+        </TouchableOpacity>
+
+
+
+
+
+      </ScrollView>
+
+
+
+    );
+  }
+  loadingView = () => {
+    return (
+      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.loadingView}>
+        <View style={styles.activityIndicatorAndButtonContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      </LinearGradient>
+    )
+  }
+  render() {
+    const { isLoading } = this.state
+    return (
+      (isLoading ? this.loadingView() : this.recipeRender())
+
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const padding = 0;
+const { width } = Dimensions.get('window');
+
+const styles = RkStyleSheet.create(theme => ({
+  root: {
+    backgroundColor: theme.colors.screen.base
   },
-});
+  mainContainer: {
+    flex: 1,
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIndicatorAndButtonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    height: width/1.1,
+    width: '100%',
+  },
+  foodTitle: {
+    marginTop: 10,
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  title: {
+    marginBottom: 10,
+    color: '#c84343'
+  },
+  title1: {
+    marginBottom: 5,
+    color: '#50EBC6',
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: 1.5,
+  },
+  Image: {
+    resizeMode: 'cover',
+    height: (width - 0.8 * padding) / 1.4,
+
+  },
+  list: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
+  imageNameContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: '#000'
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: '#000'
+  },
+  flatListContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  textNameContainer: {
+    justifyContent: 'center',
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: 1.5,
+
+  },
+  itemName: {
+    justifyContent: 'center'
+  },
+  webViewButton: {
+    justifyContent: 'flex-end'
+  },
+  foodFact: {
+    flex: 1,
+    marginTop: 12,
+    justifyContent: 'center',
+    alignContent: 'center',
+
+  },
+  ratingContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+
+  },
+  overlay: {
+    justifyContent: 'flex-end',
+
+  },
+  foodText: {
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: 1.5,
+    marginBottom: 5,
+  },
+  chartBlock: {
+    marginBottom: 15,
+    justifyContent: 'center',
+
+  },
+  foodLastText: {
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: 1.5,
+    marginBottom: 20,
+    color: '#304FFE'
+  },
+  ingText: {
+    marginBottom: 5,
+    color: '#000000',
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: 1.5,
+  },
+  recipieButton: {
+    height: 50,
+    backgroundColor: '#1ABC9C',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recipieText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recipieButtonView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageStyle: {
+    height: 295,
+    width: '100%',
+  },
+}));

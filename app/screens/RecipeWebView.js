@@ -5,12 +5,12 @@ import { Button, Header, Icon, } from 'react-native-elements'
 class RecipeWebView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Recipie',
-    headerTintColor: 'white',
+    headerTintColor: '#2F80ED',
     headerTitleStyle: { 
       fontSize: 20,
       fontWeight: 'bold',
     },
-    headerStyle: { backgroundColor: '#c84343', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
+    headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
 
   });
   constructor(props) {

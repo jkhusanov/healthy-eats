@@ -15,7 +15,7 @@ export default class TakePictureScreen extends React.Component {
       fontSize: 20,
       fontWeight: 'bold',
     },
-    headerStyle: { backgroundColor: '#FAFAFA', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
+    headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
   constructor(props) {
     super(props)
@@ -75,7 +75,7 @@ export default class TakePictureScreen extends React.Component {
 
     let { image } = this.state;
     return (
-      <View style={styles.container}>
+      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.container}>
         <View style={styles.imageShareContainer}>
           <View style={styles.uploadImageContainer}>
             <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
@@ -114,7 +114,7 @@ export default class TakePictureScreen extends React.Component {
           onPress={() => navigate('RecognitionResult', { foodImage: image })}
         >
         </Tile>}
-      </View>
+      </LinearGradient>
     )
   }
 
