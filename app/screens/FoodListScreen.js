@@ -74,7 +74,7 @@ export default class FoodListScreen extends React.Component {
     try {
       let searchItems = `&allowedIngredient[]=${allowedIngredient[0]}`
       for(let i = 0; i < allowedIngredient.length && i<5; i++) {
-        if(allowedIngredient[i] != 'sweet' && allowedIngredient[i]!='pork' && allowedIngredient[i]!='beef') {
+        if(allowedIngredient[i] != 'sweet' && allowedIngredient[i]!='pork' && allowedIngredient[i]!='kebab') {
           searchItems += `&allowedIngredient[]=${allowedIngredient[i]}`
         }
       }
@@ -133,12 +133,12 @@ export default class FoodListScreen extends React.Component {
       />
     );
   }
-  contentView = () => {
+  contentView(){
     const { foodImages, imagesLoaded } = this.state
     console.log("loaded food", foodImages)
     return (
       <View style={styles.mainContainer}>
-        <LinearGradient colors={['#536976', '#292E49']} style={styles.mainContainer}>
+        <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.mainContainer}>
           <View style={styles.imageContainer}>
             {foodImages === null ?
               this.loadingView() :
@@ -157,21 +157,12 @@ export default class FoodListScreen extends React.Component {
     );
   }
   render() {
-    const {ingredientsList} = this.state
+    const {ingredientsList, imagesLoaded} = this.state
     // console.log("Correct list: ", ingredientsList)
 
     return (
       <View style={styles.mainContainer}>
-        {this.contentView()}
-{/*       
-        <Button
-          title={'Get Recipe'}
-          containerViewStyle={{ marginTop: 20 }}
-          backgroundColor={'#c84343'}
-          borderRadius={5}
-          textStyle={{ color: 'white' }}
-          onPress={() => this.props.navigation.navigate('FoodRecipe')}
-        /> */}
+        {imagesLoaded ? this.loadingView(): this.contentView()}
       </View>
     );
   }

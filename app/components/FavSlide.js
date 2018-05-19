@@ -21,7 +21,7 @@ export default class FavSlide extends React.Component{
   constructor(props) {
     super(props);
 
-    const { item, lat, long } = props;
+    const { item} = props;
 
     this.state = {
       isFavorited: false,
@@ -61,7 +61,7 @@ export default class FavSlide extends React.Component{
     )
   }
   render = () => {
-    const { item, lat, long } = this.props;
+    const { item} = this.props;
     const { image, name, description } = item;
     const { navigate } = this.props.navigation;
     return (
