@@ -17,11 +17,11 @@ import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-export default class FavSlide extends React.Component{
+export default class FavSlide extends React.Component {
   constructor(props) {
     super(props);
 
-    const { item} = props;
+    const { item } = props;
 
     this.state = {
       isFavorited: false,
@@ -34,8 +34,27 @@ export default class FavSlide extends React.Component{
 
     // DeviceEventEmitter.emit('setMyFoodUpdated');
     this.setState({ isFavorited: !isFavorited });
-    const itemId = item.id;
-    AsyncStorage.setItem('foodId', itemId);
+    // const itemId = item.id;
+    // AsyncStorage.setItem('foodId', itemId);
+
+
+    try {
+      let con = {
+        foodId: item.id,
+      }
+      AsyncStorage.getItem('foodIds')
+        .then((foodIds) => {
+          const c = foodIds ? JSON.parse(foodIds) : [];
+          c.push(con);
+          AsyncStorage.setItem('foodIds', JSON.stringify(c));
+        });
+
+    } catch (error) {
+      alert(error)
+    }
+
+
+
 
   }
 
@@ -57,11 +76,11 @@ export default class FavSlide extends React.Component{
     var urlImage = item.replace(/=s90-c/i, "=s1080")
     // console.log(urlImage)
     return (
-      <Image style={styles.images} source={ {uri: urlImage}} />
+      <Image style={styles.images} source={{ uri: urlImage }} />
     )
   }
   render = () => {
-    const { item} = this.props;
+    const { item } = this.props;
     const { image, name, description } = item;
     const { navigate } = this.props.navigation;
     return (
@@ -69,20 +88,20 @@ export default class FavSlide extends React.Component{
         <TouchableOpacity
           activeOpacity={1}
           onPress={() =>
-            this.props.navigation.navigate('FoodRecipe', { foodID: item.id})
+            this.props.navigation.navigate('FoodRecipe', { foodID: item.id })
           }
         >
           {this.renderImage(item.imageUrlsBySize[90])}
-          
-          <View style={styles.foodInteraction}> 
-          <View style={styles.foodInfo}>
-            <Text style={styles.foodName} numberOfLines={2}>
-              {item.recipeName}
-            </Text>
-          </View>
-          <View style={styles.buttonContainer}>
+
+          <View style={styles.foodInteraction}>
+            <View style={styles.foodInfo}>
+              <Text style={styles.foodName} numberOfLines={2}>
+                {item.recipeName}
+              </Text>
+            </View>
+            <View style={styles.buttonContainer}>
               {this.renderFavoriteButton()}
-          </View>
+            </View>
           </View>
         </TouchableOpacity>
       </View>
