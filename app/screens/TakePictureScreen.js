@@ -17,6 +17,7 @@ export default class TakePictureScreen extends React.Component {
     },
     headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
+  
   constructor(props) {
     super(props)
     this.state = {
@@ -24,7 +25,7 @@ export default class TakePictureScreen extends React.Component {
       isLoading: false,
     };
   }
-
+  
   getCameraAsync = async (mediaType) => {
     const { Permissions } = Expo;
     const permissionMethod = (mediaType === 'camera'
@@ -76,6 +77,7 @@ export default class TakePictureScreen extends React.Component {
     let { image } = this.state;
     return (
       <LinearGradient colors={['#fff', '#fff']} style={styles.container}>
+      <Text style={styles.timeGreeting}>Test{"\n\n\n\n\n\n\n\n\n"}</Text>
         <View style={styles.imageShareContainer}>
           <View style={styles.uploadImageContainer}>
             <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
@@ -123,7 +125,9 @@ export default class TakePictureScreen extends React.Component {
     const { prediction, isLoading } = this.state
     console.log(isLoading)
     return (
-      (isLoading ? this.loadingView() : this.photoSend())
+       (isLoading ? this.loadingView() : this.photoSend())
+     
+     
     );
   }
 }
@@ -134,6 +138,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // alignItems: 'center',
     justifyContent: 'center',
+  },
+  timeGreeting:{
+    alignSelf: 'center'
   },
   imageShareContainer: {
     flexDirection: 'row',
