@@ -13,7 +13,7 @@ import {
   Alert,
   FlatList,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
 import {
   RkText,
@@ -54,9 +54,14 @@ export default class SavedRecipesScreen extends React.Component {
     };
     // const {foodID} = this.props;
   }
+  componentDidMount() {
+    this.displayAsyncData()
+  }
   componentWillMount() {
     //When the component is loaded
-    this.displayAsyncData()
+    DeviceEventEmitter.addListener('new_food_liked', (e) => {
+      this.displayAsyncData()
+    })
     // this._getYummlyRecipe()
   }
   displayAsyncData = async () => {
@@ -67,19 +72,26 @@ export default class SavedRecipesScreen extends React.Component {
       parsedIds: parsed,
     })
     const fetched_data = []
-
-    for (let i = 0; i < parsed.length; i++) {
-      await this._getYummlyRecipe(parsed[i])
-        .then(yummlyImage => {
-          if (yummlyImage) {
-            fetched_data.push(yummlyImage)
-          }
-        })
+    if (parsed != null) {
+      for (let i = 0; i < parsed.length; i++) {
+        await this._getYummlyRecipe(parsed[i])
+          .then(yummlyImage => {
+            if (yummlyImage) {
+              fetched_data.push(yummlyImage)
+            }
+          })
         this.setState({
           fetchedData: true,
           foodRecipe: fetched_data
         })
+      }
+    } else {
+      Alert.alert(
+        "Welcome to our app!",
+        "Start from the Camera tab and come back here when you like new food."
+      )
     }
+
     this.setState({
       isLoading: false,
     })
@@ -105,7 +117,7 @@ export default class SavedRecipesScreen extends React.Component {
 
       if (response.status === 200) {
         responseJSON = await response.json();
-        console.log("Loaded food for saved list", responseJSON)
+        // console.log("Loaded food for saved list", responseJSON)
 
         // this.setState({
         //   isLoading: false,
@@ -181,38 +193,6 @@ export default class SavedRecipesScreen extends React.Component {
                 style={styles.carouselContainer}
 
               />
-
-              {/* <TouchableOpacity
-                activeOpacity={1}
-                onPress={() =>
-                  this.props.navigation.navigate('FoodRecipe', { foodID: foodRecipe.id }
-                  )
-                }
-              >
-                <ScrollView style={styles.root}>
-                  <RkCard rkType='backImg'>
-                    <Image
-                      style={styles.image}
-                      source={{ uri: foodRecipe[0].images[0].hostedLargeUrl }}
-                      style={{
-                        width: '100%',
-                        height: 295,
-
-                      }}
-
-                    />
-                    <View rkCardImgOverlay rkCardContent style={styles.overlay}>
-                      <RkText style={styles.foodTitle} rkType='large'>{foodRecipe.name}</RkText>
-
-                    </View>
-                  </RkCard>
-                </ScrollView>
-
-
-              </TouchableOpacity> */}
-
-
-
             </View>
           </LinearGradient>
         }

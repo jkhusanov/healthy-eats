@@ -41,7 +41,6 @@ export default class FavCard extends React.Component{
     const { item } = this.props;
     const { navigate } = this.props.navigation
     // console.log(item.id)
-    console.log("name should be here"+item )
     return (
       <View style={styles.slide}>
         <TouchableOpacity
@@ -57,7 +56,6 @@ export default class FavCard extends React.Component{
           <View style={styles.foodInfo}>
             <Text style={styles.foodName} numberOfLines={2}>
               {item.name}
-              {console.log("in favCard: " + item.name)}
             </Text>
           </View>
 

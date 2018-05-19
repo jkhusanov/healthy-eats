@@ -11,6 +11,7 @@ import {
   Dimensions,
   AsyncStorage,
   DeviceEventEmitter,
+  Alert,
 } from 'react-native';
 import { Icon, Header, Button } from 'react-native-elements';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
@@ -42,20 +43,42 @@ export default class FavSlide extends React.Component {
       let con = {
         foodId: item.id,
       }
+
+      function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+          if (list[i].foodId === obj) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
       AsyncStorage.getItem('foodIds')
         .then((foodIds) => {
           const c = foodIds ? JSON.parse(foodIds) : [];
-          c.push(con);
+          console.log("Display the list", c)
+          console.log("item id", item.id)
+          if (containsObject(item.id, c)) {
+            console.log("in the list", true);
+            Alert.alert(
+              "It's there",
+              "You've already addded this food to your list before"
+            )
+
+          }
+          else {
+            c.push(con);
+
+          }
           AsyncStorage.setItem('foodIds', JSON.stringify(c));
+          DeviceEventEmitter.emit('new_food_liked', {})
         });
 
     } catch (error) {
       alert(error)
     }
-
-
-
-
   }
 
   renderFavoriteButton = () => {
