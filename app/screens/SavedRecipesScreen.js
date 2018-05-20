@@ -153,7 +153,7 @@ export default class SavedRecipesScreen extends React.Component {
     }
   }
 
-  loadingImages = () => {
+  loadingImages() {
     return (
       <LinearGradient colors={['#536976', '#292E49']} style={styles.loadingView}>
         <View style={styles.activityIndicatorAndButtonContainer}>
@@ -162,7 +162,7 @@ export default class SavedRecipesScreen extends React.Component {
       </LinearGradient>
     )
   }
-  contentView = () => {
+  contentView() {
     const { foodRecipe, isLoading, foodID } = this.state
     const { navigate } = this.props.navigation
     // console.log(foodRecipe )
