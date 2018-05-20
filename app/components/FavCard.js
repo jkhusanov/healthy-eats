@@ -32,10 +32,10 @@ export default class FavCard extends React.Component {
   _showAlert = () => {
     Alert.alert(
       'Warning',
-      'Are you sure you want to remove food from your list?',
+      'Are you sure you want to remove this food from your list?',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => {console.log('OK Pressed'), this.onRemoveButtonPress()}},
+        {text: 'Yes', onPress: () => {console.log('Yes Pressed'), this.onRemoveButtonPress()}},
       ],
       { cancelable: false }
     )

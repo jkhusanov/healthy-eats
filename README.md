@@ -19,16 +19,19 @@
 ## TODO
   - [x] Create the project and push it to the remote repository
   - [x] Implement navigation and initial screens
-  - [ ] Implement **IntroScreen** Slider UI 
-  - [ ] Implement main **TakePicture** screen UI 
+  - [x] Implement **IntroScreen** Slider UI 
+  - [x] Implement main **TakePicture** screen UI 
     - [x] Use [Clarifai](https://clarifai.com/blog/what-food-is-this-clarifais-food-recognition-technology-can-tell-you) food recognition model and implement full dynamic functionality
-  - [ ] Implement **FoodList** screen UI with snap-carousel
-    - [ ] Use [Yummly Recipe API](https://developer.yummly.com/documentation) to get food recipe based on ingredients, and we will try to show relevant food based on ingredients.
-  - [ ] Implement **FoodRecipe** screen using Yummly API
-  - [ ] Implement **SavedRecipes** screen
-    - [ ] Use Yummly API
+  - [x] Implement **FoodList** screen UI with snap-carousel
+    - [x] Use [Yummly Recipe API](https://developer.yummly.com/documentation) to get food recipe based on ingredients, and we will try to show relevant food based on ingredients.
+  - [x] Implement **FoodRecipe** screen using Yummly API
+  - [x] Implement **SavedRecipes** screen
+    - [x] Use Yummly API
     to get dynamic data for recipes
-  - [ ] :star: **Bonus:** Share feature
+  - [x] :star: **Bonus:** Share feature
+  - [x] :star: **Bonus:** Search bar if food is not found based on ingredients
+  - [ ] Seasonal button
+  - [ ] Greetings based on time
 
 
 #### Todo (initial): 
