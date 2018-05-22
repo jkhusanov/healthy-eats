@@ -73,11 +73,18 @@ export default class TakePictureScreen extends React.Component {
   photoSend() {
     const { isLoading } = this.state
     const { navigate } = this.props.navigation
-
     let { image } = this.state;
+    
+    var date, hour, greeting;
+    date = new Date();
+    
+    hour = date.getHours();
+    
+    
     return (
       <LinearGradient colors={['#fff', '#fff']} style={styles.container}>
-      <Text style={styles.timeGreeting}>Test{"\n\n\n\n\n\n\n\n\n"}</Text>
+     
+      <Text style={styles.timeGreeting}> Test {hour}{"\n\n\n\n\n\n\n\n\n"}</Text>
         <View style={styles.imageShareContainer}>
           <View style={styles.uploadImageContainer}>
             <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
@@ -140,7 +147,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   timeGreeting:{
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: 22,
   },
   imageShareContainer: {
     flexDirection: 'row',
