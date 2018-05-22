@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator, Alert, Dimensions } from 'react-native';
+import { StyleSheet, Modal, Text, View, Image, TouchableOpacity,TouchableHighlight, ActivityIndicator, Alert, Dimensions } from 'react-native';
 import { Button, Icon, Tile } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
+//import Popup from "reactjs-popup";
+//import ReactDom from 'react-dom';
 import Clarifai from 'clarifai'
+
+import FOODCHART from '../../assets/seasonal2.png';
 
 const { width } = Dimensions.get('window');
 
@@ -23,6 +27,7 @@ export default class TakePictureScreen extends React.Component {
     this.state = {
       image: null,
       isLoading: false,
+      modalVisible: false,
     };
   }
   
@@ -60,7 +65,12 @@ export default class TakePictureScreen extends React.Component {
       navigate('RecognitionResult', { foodImage: result })
     }
   };
-
+//   state = {
+//     modalVisible: false,
+//  }
+  toggleModal(visible) {
+    this.setState({ modalVisible: visible });
+ }
   loadingView = () => {
     return (
       <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.loadingView}>
@@ -77,14 +87,43 @@ export default class TakePictureScreen extends React.Component {
     
     var date, hour, greeting;
     date = new Date();
-    
     hour = date.getHours();
-    
+    if (hour > 12) greeting = "Good Afternoon! 😊"
+    if (hour > 18) greeting = "Good Evening! 😊"
+    if (hour <= 11) greeting = "Good Morning! 😊"
     
     return (
+      
       <LinearGradient colors={['#fff', '#fff']} style={styles.container}>
-     
-      <Text style={styles.timeGreeting}> Test {hour}{"\n\n\n\n\n\n\n\n\n"}</Text>
+        
+      <Text style={styles.timeGreeting}> {greeting} {"\n\n\n\n\n\n\n\n"} 
+      <TouchableOpacity 
+        onPress={() => {this.toggleModal(true)}}>
+        <Text style = {styles.modalButton}>Seasonal Produce</Text>
+      </TouchableOpacity> {/*button to open modal*/}
+      </Text>
+        
+        {/*start modal handling, only if open*/}
+        <Modal 
+        animationType = {"slide"} transparent = {false}
+        visible = {this.state.modalVisible}
+        onRequestClose = {() =>{ console.log("Modal has been closed.") } }>
+          <View style = {styles.modal}>
+          <Text style = {styles.modalOpen}>Pop Up Info Panel!</Text>
+            <TouchableHighlight onPress = {() => {
+                this.toggleModal(!this.state.modalVisible)}}>
+                <Text style = {styles.closeModal}>Back to Main Screen</Text>
+              </TouchableHighlight>
+              
+          </View>
+        </Modal>{/* end modal handling*/}
+
+      {/* <TouchableOpacity 
+        onPress={() => {this.toggleModal(true)}}>
+        <Text style = {styles.modalButton}>Seasonal Produce</Text>
+      </TouchableOpacity> button to open modal */}
+
+
         <View style={styles.imageShareContainer}>
           <View style={styles.uploadImageContainer}>
             <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
@@ -107,6 +146,7 @@ export default class TakePictureScreen extends React.Component {
               />
               <Text style={styles.photoLabel}>Take a photo</Text>
             </TouchableOpacity>
+
           </View>
         </View>
         {image &&
@@ -149,6 +189,17 @@ const styles = StyleSheet.create({
   timeGreeting:{
     alignSelf: 'center',
     fontSize: 22,
+  },
+  modalButton:{
+    alignSelf: 'center'
+  },
+  modalOpen:{
+    marginTop: 30,
+    alignSelf: 'center'
+  },
+  closeModal:{
+    marginTop: 30,
+    alignSelf: 'center'
   },
   imageShareContainer: {
     flexDirection: 'row',
@@ -194,5 +245,16 @@ const styles = StyleSheet.create({
     textShadowColor: 'black',
     textShadowOffset: { width: -2, height: 1 },
     textShadowRadius: 5,
+
+  },
+  button: {
+    margin: 15,
+    padding: 10,
+    borderRadius: 10,
+    borderColor: "transparent",
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#34495e',
+    backgroundColor: '#ff6666'
   },
 });
