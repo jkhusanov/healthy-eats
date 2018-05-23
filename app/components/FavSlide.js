@@ -11,17 +11,18 @@ import {
   Dimensions,
   AsyncStorage,
   DeviceEventEmitter,
+  Alert,
 } from 'react-native';
 import { Icon, Header, Button } from 'react-native-elements';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-export default class FavSlide extends React.Component{
+export default class FavSlide extends React.Component {
   constructor(props) {
     super(props);
 
-    const { item} = props;
+    const { item } = props;
 
     this.state = {
       isFavorited: false,
@@ -32,11 +33,49 @@ export default class FavSlide extends React.Component{
     const { isFavorited } = this.state;
     const { onFavoriteButtonPressEmit } = this.props;
 
-    // DeviceEventEmitter.emit('setMyFoodUpdated');
     this.setState({ isFavorited: !isFavorited });
-    const itemId = item.id;
-    AsyncStorage.setItem('foodId', itemId);
 
+
+    try {
+      let con = {
+        foodId: item.id,
+      }
+
+      function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+          if (list[i].foodId === obj) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      AsyncStorage.getItem('foodIds')
+        .then((foodIds) => {
+          const c = foodIds ? JSON.parse(foodIds) : [];
+          // console.log("Display the list", c)
+          // console.log("item id", item.id)
+          if (containsObject(item.id, c)) {
+            console.log("in the list", true);
+            Alert.alert(
+              "It's there",
+              "You've already addded this food to your list before"
+            )
+
+          }
+          else {
+            c.push(con);
+
+          }
+          AsyncStorage.setItem('foodIds', JSON.stringify(c));
+          DeviceEventEmitter.emit('new_food_liked', {})
+        });
+
+    } catch (error) {
+      alert(error)
+    }
   }
 
   renderFavoriteButton = () => {
@@ -57,11 +96,11 @@ export default class FavSlide extends React.Component{
     var urlImage = item.replace(/=s90-c/i, "=s1080")
     // console.log(urlImage)
     return (
-      <Image style={styles.images} source={ {uri: urlImage}} />
+      <Image style={styles.images} source={{ uri: urlImage }} />
     )
   }
   render = () => {
-    const { item} = this.props;
+    const { item } = this.props;
     const { image, name, description } = item;
     const { navigate } = this.props.navigation;
     return (
@@ -69,20 +108,20 @@ export default class FavSlide extends React.Component{
         <TouchableOpacity
           activeOpacity={1}
           onPress={() =>
-            this.props.navigation.navigate('FoodRecipe', { foodID: item.id})
+            this.props.navigation.navigate('FoodRecipe', { foodID: item.id })
           }
         >
           {this.renderImage(item.imageUrlsBySize[90])}
-          
-          <View style={styles.foodInteraction}> 
-          <View style={styles.foodInfo}>
-            <Text style={styles.foodName} numberOfLines={2}>
-              {item.recipeName}
-            </Text>
-          </View>
-          <View style={styles.buttonContainer}>
+
+          <View style={styles.foodInteraction}>
+            <View style={styles.foodInfo}>
+              <Text style={styles.foodName} numberOfLines={2}>
+                {item.recipeName}
+              </Text>
+            </View>
+            <View style={styles.buttonContainer}>
               {this.renderFavoriteButton()}
-          </View>
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -148,10 +187,3 @@ const styles = StyleSheet.create({
 
   },
 });
-
-
-/**
- *   { food.ingredientLines.map((item, key)=>(
-         <Text key={key} style={styles.textNameContainer}> { item } </Text>)
-         )}
- */

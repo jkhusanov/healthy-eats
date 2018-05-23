@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, Platform, ScrollView, Linking, flex, Button, WebView, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform, ScrollView, Linking, flex, Button, WebView, TouchableOpacity, FlatList, Image, ActivityIndicator, Share } from 'react-native';
 import {
   RkText,
   RkCard, RkStyleSheet, RkTheme,
@@ -8,6 +8,7 @@ import { PieChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 import { Rating, Tile } from 'react-native-elements'
 import { LinearGradient } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
 export default class FoodRecipeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -148,14 +149,14 @@ export default class FoodRecipeScreen extends React.Component {
             imageSrc={{ uri: food.images[0].hostedLargeUrl }}
             title={food.name}
             titleStyle={styles.nameLabel}
-            contentContainerStyle={{ height: 100 }}
+            contentContainerStyle={{ height: 105 }}
             activeOpacity={1}
             captionStyle={styles.foodCaptionStyle}
             imageContainerStyle={styles.imageStyle}
             containerStyle={styles.imageContainer}
 
           >
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
               <Rating
                 type="custom"
                 readonly
@@ -165,6 +166,22 @@ export default class FoodRecipeScreen extends React.Component {
                 imageSize={20}
                 style={{ marginVertical: 10 }}
               />
+              <TouchableOpacity onPress={() => {
+                Share.share(
+                  {
+                    message: "I've found this recipe through HealthyEats! " + (Platform.OS === 'ios' ? food.name : food.source.sourceRecipeUrl),
+                    url: food.source.sourceRecipeUrl,
+                    title: food.name
+                  })
+                  .then(result => console.log(result))
+                  .catch(err => console.log(err));
+              }}>
+                <Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
+                  color={'#1ABC9C'}
+                  size={Platform.OS === 'ios' ? 30 : 25}
+                />
+              </TouchableOpacity>
             </View>
           </Tile>
           <View rkCardHeader>
@@ -272,7 +289,7 @@ const styles = RkStyleSheet.create(theme => ({
     alignItems: 'center',
   },
   imageContainer: {
-    height: width/1.1,
+    height: width / 1.1,
     width: '100%',
   },
   foodTitle: {
