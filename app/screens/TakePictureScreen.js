@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Modal, Text, View, Image, TouchableOpacity,TouchableHighlight, ActivityIndicator, Alert, Dimensions } from 'react-native';
+import { StyleSheet, Modal, ScrollView, Text, View, Image, TouchableOpacity,TouchableHighlight, ActivityIndicator, Alert, Dimensions } from 'react-native';
 import { Button, Icon, Tile } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
@@ -7,13 +7,14 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 //import ReactDom from 'react-dom';
 import Clarifai from 'clarifai'
 
-import FOODCHART from '../../assets/seasonal2.png';
+import FOODCHART1 from '../../assets/seasonal1.png';
+import FOODCHART2 from '../../assets/seasonal2.png';
 
 const { width } = Dimensions.get('window');
 
 export default class TakePictureScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Take Picture',
+    title: 'Take a Picture',
     headerTintColor: '#2F80ED',
     headerTitleStyle: {
       fontSize: 20,
@@ -73,7 +74,7 @@ export default class TakePictureScreen extends React.Component {
  }
   loadingView = () => {
     return (
-      <LinearGradient colors={['#DAE2F8', '#D6A4A4']} style={styles.loadingView}>
+      <LinearGradient colors={['#ddd6f3', '#D6A4A4']} style={styles.loadingView}>
         <View style={styles.activityIndicatorAndButtonContainer}>
           <ActivityIndicator size="large" />
         </View>
@@ -85,37 +86,39 @@ export default class TakePictureScreen extends React.Component {
     const { navigate } = this.props.navigation
     let { image } = this.state;
     
-    var date, hour, greeting;
+    var date, hour, greeting, modalClick;
     date = new Date();
     hour = date.getHours();
-    if (hour > 12) greeting = "Good Afternoon! 😊"
-    if (hour > 18) greeting = "Good Evening! 😊"
-    if (hour <= 11) greeting = "Good Morning! 😊"
-    
+    if (hour => 12) {greeting = "Good Afternoon! 😊"}
+    else if (hour => 18){ greeting = "Good Evening! 😊"}
+    else if (hour <= 11) {greeting = "Good Morning! 😊"}
+    modalClick = "What's in Season?"
     return (
-      
-      <LinearGradient colors={['#fff', '#fff']} style={styles.container}>
-        
-      <Text style={styles.timeGreeting}> {greeting} {"\n\n\n\n\n\n\n\n"} 
+      <LinearGradient colors={['#ddd6f3', '#faaca8']} style={styles.container}>
+    
+      <Text style={styles.timeGreeting}> {greeting} {"\n\n"}
       <TouchableOpacity 
         onPress={() => {this.toggleModal(true)}}>
-        <Text style = {styles.modalButton}>Seasonal Produce</Text>
+        <Text style = {styles.modalButton}>{"   "+modalClick+"  "} </Text>
+        <Text>{"\n\n\n\n\n\n\n\n"}</Text>
       </TouchableOpacity> {/*button to open modal*/}
       </Text>
         
         {/*start modal handling, only if open*/}
         <Modal 
-        animationType = {"slide"} transparent = {false}
+        //animationType = {"slide"} transparent = {false}
         visible = {this.state.modalVisible}
         onRequestClose = {() =>{ console.log("Modal has been closed.") } }>
-          <View style = {styles.modal}>
-          <Text style = {styles.modalOpen}>Pop Up Info Panel!</Text>
+          <ScrollView contentContainerStyle = {styles.modal}>
+         {/*<Text style = {styles.modalOpen}>Pop Up Info Panel!</Text>*/}
             <TouchableHighlight onPress = {() => {
                 this.toggleModal(!this.state.modalVisible)}}>
                 <Text style = {styles.closeModal}>Back to Main Screen</Text>
               </TouchableHighlight>
-              
-          </View>
+              <Image style={styles.foodChart} source={FOODCHART1}/>
+              <Image style={styles.foodChart} source={FOODCHART2}/>
+              <Text style = {styles.creditTo}>Source: The Krazy Coupon Lady</Text>
+          </ScrollView>
         </Modal>{/* end modal handling*/}
 
       {/* <TouchableOpacity 
@@ -188,18 +191,49 @@ const styles = StyleSheet.create({
   },
   timeGreeting:{
     alignSelf: 'center',
-    fontSize: 22,
+    justifyContent: 'center',
+    color: 'white',
+    fontSize: 27,
+    fontWeight: 'bold',
   },
   modalButton:{
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginLeft: 30, //fix
+    color: 'white',
+    padding: 5,
+    fontSize: 17,
+    fontWeight: 'bold',
+    borderRadius: 14,
+    borderColor: 'white',
+    borderWidth: 2,
+    backgroundColor: 'transparent',
+  },
+  modal:{
+    justifyContent: 'center',
+    backgroundColor:'#faaca8',
+  },
+  foodChart:{
+    alignSelf: 'center',
+    padding: 20,
   },
   modalOpen:{
     marginTop: 30,
     alignSelf: 'center'
   },
   closeModal:{
-    marginTop: 30,
-    alignSelf: 'center'
+    marginTop: 50,
+    marginBottom: 10,
+    alignSelf: 'center',
+    color: 'white',
+    padding: 5,
+    borderRadius: 10,
+    borderColor: 'white',
+    borderWidth: 2,
+    backgroundColor: 'transparent',
+  },
+  creditTo:{
+    fontSize: 10,
+    marginLeft: 50,
   },
   imageShareContainer: {
     flexDirection: 'row',
@@ -214,7 +248,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   photoLabel: {
-    color: '#737373'
+    //color: '#737373'
+    color: 'white'
   },
   loadingView: {
     flex: 1,
