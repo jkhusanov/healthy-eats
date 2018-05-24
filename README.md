@@ -25,6 +25,28 @@ How to run the Demo on your phone:
 Note: If being tested on iPhone/iOS Expo will require log in/sign up
 Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon)
 
+### Demo and some screenshots
+
+![demo_ios](https://github.com/csc413-03-sp18/csc413-secondgame-Team20/blob/master/screenshots/Demo_iOS.gif)
+
+<div style={{display: flex; flex-direction: row}}>
+  <img src="screenshots/1.png" width="270" />
+  <img src="screenshots/2.png" width="270" />
+  <img src="screenshots/3.png" width="270" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
+  <img src="screenshots/4.png" width="270" />
+  <img src="screenshots/5.png" width="270" />
+  <img src="screenshots/6.png" width="270" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
+  <img src="screenshots/final/7.png" width="270" />
+  <img src="screenshots/final/8.png" width="270" />
+  <img src="screenshots/final/9.png" width="270" />
+</div>
+
+
+
 ## TODO
   - [x] Create the project and push it to the remote repository
   - [x] Implement navigation and initial screens
