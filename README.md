@@ -20,7 +20,7 @@ Additional library (package manager): npm
 ### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)
 How to run the Demo on your phone:
 1. Install Expo Application
-2. Navigate to ttps://expo.io/@jkhusanov/healthy-eats on a computer 
+2. Navigate to https://expo.io/@jkhusanov/healthy-eats on a computer 
 3. Scan QR code on the right hand side via camera
 Note: If being tested on iPhone/iOS Expo will require log in/sign up
 Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon)
