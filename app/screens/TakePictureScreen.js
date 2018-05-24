@@ -97,12 +97,12 @@ export default class TakePictureScreen extends React.Component {
     return (
       <LinearGradient colors={['#ddd6f3', '#faaca8']} style={styles.container}>
         <ScrollView>
-          <Text style={styles.timeGreeting}> {greeting} {"\n\n"}
+          <Text style={styles.timeGreeting}> {"\n\n"} {greeting} {"\n\n"}
             <TouchableOpacity
               onPress={() => { this.toggleModal(true) }}>
               <Text style={styles.modalButton}>{"   " + modalClick + "  "} </Text>
-              <Text>{"\n\n\n\n\n\n\n\n"}</Text>
-            </TouchableOpacity> {/*button to open modal*/}
+              
+            </TouchableOpacity> {/*button to open modal*/}<Text>{"\n\n\n"}</Text>
           </Text>
 
           {/*start modal handling, only if open*/}
