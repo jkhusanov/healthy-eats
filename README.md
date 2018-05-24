@@ -13,8 +13,17 @@
   HealthyEats is a tool to get food recipes based on food photo
 </p>
 
-### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)
+#### Environment:
+Visual Studios + ExpoXDE with JavaScript
+Additional library (package manager): npm
 
+### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)
+How to run the Demo on your phone:
+1. Install Expo Application
+2. Navigate to ttps://expo.io/@jkhusanov/healthy-eats on a computer 
+3. Scan QR code on the right hand side via camera
+Note: If being tested on iPhone/iOS Expo will require log in/sign up
+Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon)
 
 ## TODO
   - [x] Create the project and push it to the remote repository
@@ -30,8 +39,8 @@
     to get dynamic data for recipes
   - [x] :star: **Bonus:** Share feature
   - [x] :star: **Bonus:** Search bar if food is not found based on ingredients
-  - [ ] Seasonal button
-  - [ ] Greetings based on time
+  - [x] Seasonal button
+  - [x] Greetings based on time
 
 
 #### Todo (initial): 
