@@ -14,15 +14,15 @@
 </p>
 
 #### Environment:
-Visual Studios + ExpoXDE with JavaScript
+React Native, with JavaScript, Visual Studios + ExpoXDE 
 Additional library (package manager): npm
 
 ### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)
 How to run the Demo on your phone:
-1. Install Expo Application
+1. Install **Expo** ClientApplication: [iOS here](https://itunes.apple.com/app/apple-store/id982107779) [Android here](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
 2. Navigate to https://expo.io/@jkhusanov/healthy-eats on a computer 
 3. Scan QR code on the right hand side via camera
-Note: If being tested on iPhone/iOS Expo will require log in/sign up
+Note: If being tested on iPhone/iOS Expo will require log in/sign up temporary login will be provided on the project documentation file.
 Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon)
 
 ### Demo and some screenshots
@@ -40,9 +40,9 @@ Note: If any trouble testing the app, please contact either team member via slac
   <img src="screenshots/6.png" width="270" />
 </div>
 <div style={{display: flex; flex-direction: row}}>
-  <img src="screenshots/final/7.png" width="270" />
-  <img src="screenshots/final/8.png" width="270" />
-  <img src="screenshots/final/9.png" width="270" />
+  <img src="screenshots/7.png" width="270" />
+  <img src="screenshots/8.png" width="270" />
+  <img src="screenshots/9.png" width="270" />
 </div>
 
 
