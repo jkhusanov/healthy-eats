@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Modal, ScrollView, Text, View, Image, TouchableOpacity,TouchableHighlight, ActivityIndicator, Alert, Dimensions } from 'react-native';
+import { StyleSheet, Modal, ScrollView, Text, View, Image, TouchableOpacity, TouchableHighlight, ActivityIndicator, Alert, Dimensions } from 'react-native';
 import { Button, Icon, Tile } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export default class TakePictureScreen extends React.Component {
     },
     headerStyle: { backgroundColor: '#DAE2F8', borderBottomWidth: 0.5, borderBottomColor: '#aaaaaa', },
   });
-  
+
   constructor(props) {
     super(props)
     this.state = {
@@ -31,7 +31,7 @@ export default class TakePictureScreen extends React.Component {
       modalVisible: false,
     };
   }
-  
+
   getCameraAsync = async (mediaType) => {
     const { Permissions } = Expo;
     const permissionMethod = (mediaType === 'camera'
@@ -62,16 +62,16 @@ export default class TakePictureScreen extends React.Component {
 
 
     if (!result.cancelled) {
-      this.setState({ image: result});
+      this.setState({ image: result });
       navigate('RecognitionResult', { foodImage: result })
     }
   };
-//   state = {
-//     modalVisible: false,
-//  }
+  //   state = {
+  //     modalVisible: false,
+  //  }
   toggleModal(visible) {
     this.setState({ modalVisible: visible });
- }
+  }
   loadingView = () => {
     return (
       <LinearGradient colors={['#ddd6f3', '#D6A4A4']} style={styles.loadingView}>
@@ -85,86 +85,91 @@ export default class TakePictureScreen extends React.Component {
     const { isLoading } = this.state
     const { navigate } = this.props.navigation
     let { image } = this.state;
-    
+
     var date, hour, greeting, modalClick;
     date = new Date();
     hour = date.getHours();
-    if (hour => 12) {greeting = "Good Afternoon! ☀️"}
-    else if (hour => 18){ greeting = "Good Evening! 🌙"}
-    else if (hour <= 11) {greeting = "Good Morning! ☀️"}
+
+    if (hour => 12) { greeting = "Good Afternoon! ☀️" }
+    else if (hour => 18) { greeting = "Good Evening! 🌙" }
+    else if (hour <= 11) { greeting = "Good Morning! 😊☀️" }
     modalClick = "What's in Season?"
     return (
       <LinearGradient colors={['#ddd6f3', '#faaca8']} style={styles.container}>
-    
-      <Text style={styles.timeGreeting}> {greeting} {"\n\n"}
-      <TouchableOpacity 
-        onPress={() => {this.toggleModal(true)}}>
-        <Text style = {styles.modalButton}>{"   "+modalClick+"  "} </Text>
-      </TouchableOpacity> {/*button to open modal*/}
-       <Text>{"\n\n\n\n\n"}</Text></Text>
-        
-        {/*start modal handling, only if open*/}
-        <Modal 
-        //animationType = {"slide"} transparent = {false}
-        visible = {this.state.modalVisible}
-        onRequestClose = {() =>{ console.log("Modal has been closed.") } }>
-          <ScrollView contentContainerStyle = {styles.modal}>
-         {/*<Text style = {styles.modalOpen}>Pop Up Info Panel!</Text>*/}
-            <TouchableHighlight onPress = {() => {
-                this.toggleModal(!this.state.modalVisible)}}>
-                <Text style = {styles.closeModal}>Back to Main Screen</Text>
-              </TouchableHighlight>
-              <Image style={styles.foodChart} source={FOODCHART1}/>
-              <Image style={styles.foodChart} source={FOODCHART2}/>
-              <Text style = {styles.creditTo}>Source: The Krazy Coupon Lady</Text>
-          </ScrollView>
-        </Modal>{/* end modal handling*/}
+        <ScrollView>
+          <Text style={styles.timeGreeting}> {greeting} {"\n\n"}
+            <TouchableOpacity
+              onPress={() => { this.toggleModal(true) }}>
+              <Text style={styles.modalButton}>{"   " + modalClick + "  "} </Text>
+              <Text>{"\n\n\n\n\n\n\n\n"}</Text>
+            </TouchableOpacity> {/*button to open modal*/}
+          </Text>
 
-      {/* <TouchableOpacity 
+          {/*start modal handling, only if open*/}
+          <Modal
+            //animationType = {"slide"} transparent = {false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => { console.log("Modal has been closed.") }}>
+            <ScrollView contentContainerStyle={styles.modal}>
+              {/*<Text style = {styles.modalOpen}>Pop Up Info Panel!</Text>*/}
+              <TouchableHighlight onPress={() => {
+                this.toggleModal(!this.state.modalVisible)
+              }}>
+                <Text style={styles.closeModal}>Back to Main Screen</Text>
+              </TouchableHighlight>
+              <Image style={styles.foodChart} source={FOODCHART1} />
+              <Image style={styles.foodChart} source={FOODCHART2} />
+              <Text style={styles.creditTo}>Source: The Krazy Coupon Lady</Text>
+            </ScrollView>
+          </Modal>{/* end modal handling*/}
+
+          {/* <TouchableOpacity 
         onPress={() => {this.toggleModal(true)}}>
         <Text style = {styles.modalButton}>Seasonal Produce</Text>
       </TouchableOpacity> button to open modal */}
 
 
-        <View style={styles.imageShareContainer}>
-          <View style={styles.uploadImageContainer}>
-            <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
-              <Ionicons
-                name='md-image'
-                size={45}
-                color='#2F80ED'
-                style={styles.photoPostIcon}
-              />
-              <Text style={styles.photoLabel}>Upload from library</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.uploadImageContainer}>
-            <TouchableOpacity onPress={() => this.getCameraAsync('camera')}>
-              <Ionicons
-                name='ios-camera'
-                size={45}
-                color='#2F80ED'
-                style={styles.photoPostIcon}
-              />
-              <Text style={styles.photoLabel}>Take a photo</Text>
-            </TouchableOpacity>
+          <View style={styles.imageShareContainer}>
+            <View style={styles.uploadImageContainer}>
+              <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
+                <Ionicons
+                  name='md-image'
+                  size={45}
+                  color='#2F80ED'
+                  style={styles.photoPostIcon}
+                />
+                <Text style={styles.photoLabel}>Upload from library</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.uploadImageContainer}>
+              <TouchableOpacity onPress={() => this.getCameraAsync('camera')}>
+                <Ionicons
+                  name='ios-camera'
+                  size={45}
+                  color='#2F80ED'
+                  style={styles.photoPostIcon}
+                />
+                <Text style={styles.photoLabel}>Take a photo</Text>
+              </TouchableOpacity>
 
+            </View>
           </View>
-        </View>
-        {image &&
-        <Tile
-          imageSrc={{ uri: image.uri }}
-          imageContainerStyle={styles.imageStyle}
-          title={'Recent food'}
-          titleStyle={styles.nameLabel}
-          featured
-          activeOpacity={0.6}
-          caption={'Analyze it again'}
-          captionStyle={styles.foodCaptionStyle}
-          containerStyle={styles.imageContainer}
-          onPress={() => navigate('RecognitionResult', { foodImage: image })}
-        >
-        </Tile>}
+          {image &&
+            <Tile
+              imageSrc={{ uri: image.uri }}
+              imageContainerStyle={styles.imageStyle}
+              title={'Recent food'}
+              titleStyle={styles.nameLabel}
+              featured
+              activeOpacity={0.6}
+              caption={'Analyze it again'}
+              captionStyle={styles.foodCaptionStyle}
+              containerStyle={styles.imageContainer}
+              onPress={() => navigate('RecognitionResult', { foodImage: image })}
+            >
+            </Tile>}
+        </ScrollView>
+
       </LinearGradient>
     )
   }
@@ -174,9 +179,9 @@ export default class TakePictureScreen extends React.Component {
     const { prediction, isLoading } = this.state
     console.log(isLoading)
     return (
-       (isLoading ? this.loadingView() : this.photoSend())
-     
-     
+      (isLoading ? this.loadingView() : this.photoSend())
+
+
     );
   }
 }
@@ -188,14 +193,14 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     justifyContent: 'center',
   },
-  timeGreeting:{
+  timeGreeting: {
     alignSelf: 'center',
     justifyContent: 'center',
     color: 'white',
     fontSize: 27,
     fontWeight: 'bold',
   },
-  modalButton:{
+  modalButton: {
     alignSelf: 'center',
     marginLeft: 30, //fix
     color: 'white',
@@ -207,19 +212,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     backgroundColor: 'transparent',
   },
-  modal:{
+  modal: {
     justifyContent: 'center',
-    backgroundColor:'#faaca8',
+    backgroundColor: '#faaca8',
   },
-  foodChart:{
+  foodChart: {
     alignSelf: 'center',
     padding: 20,
   },
-  modalOpen:{
+  modalOpen: {
     marginTop: 30,
     alignSelf: 'center'
   },
-  closeModal:{
+  closeModal: {
     marginTop: 50,
     marginBottom: 10,
     alignSelf: 'center',
@@ -230,7 +235,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     backgroundColor: 'transparent',
   },
-  creditTo:{
+  creditTo: {
     fontSize: 10,
     marginLeft: 50,
   },
@@ -272,7 +277,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
     fontWeight: 'bold'
-  }, 
+  },
   foodCaptionStyle: {
     fontSize: 18,
     color: 'white',

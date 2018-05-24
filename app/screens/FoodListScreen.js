@@ -182,8 +182,8 @@ export default class FoodListScreen extends React.Component {
   }
   contentView() {
     const { foodImages, imagesLoaded } = this.state
-    console.log("loaded food", foodImages)
-    if (foodImages.length === 0) {
+    // console.log("loaded food", foodImages)
+    if (foodImages != null && foodImages.length === 0) {
       return (
         <View style={{flex: 1,}}>
           {Alert.alert(
