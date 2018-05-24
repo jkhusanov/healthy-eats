@@ -10,7 +10,7 @@ const { width } = Dimensions.get('window');
 
 export default class RecognitionResultScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Clarified',
+    title: 'Clarifai Results',
     headerTintColor: '#2F80ED',
     headerTitleStyle: {
       fontSize: 20,
@@ -125,17 +125,18 @@ export default class RecognitionResultScreen extends React.Component {
     let { foodImage } = this.state;
     return (
       <ScrollView style={styles.container}>
+       
         {foodImage &&
           <View style={styles.imageContainer}><Image source={{ uri: foodImage.uri }} style={styles.imageStyle} /></View>}
         <View styles={styles.predictionContainer}>
           {this.renderPrediction()}
         </View>
         <Button
-          title={'Start Cooking!'}
+          title={'Find a Recipe!'}
           containerViewStyle={{ marginVertical: 10, alignItems: 'center' }}
-          textStyle={{ color: 'white' }}
+          textStyle={{ color: 'white', fontWeight: 'bold' }}
           buttonStyle={{
-            backgroundColor: '#1ABC9C',
+            backgroundColor: '#faaca8',
             width: 200,
             height: 45,
             borderColor: "transparent",
@@ -160,7 +161,7 @@ export default class RecognitionResultScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ddd6f3',
   },
   loadingView: {
     flex: 1,

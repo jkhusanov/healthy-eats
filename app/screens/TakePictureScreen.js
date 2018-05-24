@@ -89,9 +89,10 @@ export default class TakePictureScreen extends React.Component {
     var date, hour, greeting, modalClick;
     date = new Date();
     hour = date.getHours();
-    if (hour => 12) { greeting = "Good Afternoon! 😊" }
-    else if (hour => 18) { greeting = "Good Evening! 😊" }
-    else if (hour <= 11) { greeting = "Good Morning! 😊" }
+
+    if (hour => 12) { greeting = "Good Afternoon! ☀️" }
+    else if (hour => 18) { greeting = "Good Evening! 🌙" }
+    else if (hour <= 11) { greeting = "Good Morning! 😊☀️" }
     modalClick = "What's in Season?"
     return (
       <LinearGradient colors={['#ddd6f3', '#faaca8']} style={styles.container}>
