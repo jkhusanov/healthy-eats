@@ -19,11 +19,11 @@ Additional library (package manager): npm
 
 ### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)
 How to run the Demo on your phone:
-1. Install **Expo** Client Application: [iOS here](https://itunes.apple.com/app/apple-store/id982107779) and [Android here](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
+1. Install **Expo** Client Application on your device: [iOS here](https://itunes.apple.com/app/apple-store/id982107779) and [Android here](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
 2. Navigate to https://expo.io/@jkhusanov/healthy-eats on a computer 
 3. Scan QR code on the right hand side via camera
-Note: If being tested on iPhone/iOS Expo will require log in/sign up temporary login will be provided on the project documentation file.
-4. Please Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon)
+Note: If being tested on iPhone/iOS Expo will require log in/sign up, temporary login will be provided on the project documentation file.
+4. Please Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon) or email us.
 
 ### Demo and some screenshots
 
