@@ -96,64 +96,58 @@ export default class TakePictureScreen extends React.Component {
     modalClick = "What's in Season?"
     return (
       <LinearGradient colors={['#ddd6f3', '#faaca8']} style={styles.container}>
-        <ScrollView>
-          <Text style={styles.timeGreeting}> {"\n\n"} {greeting} {"\n\n"}
-            <TouchableOpacity
-              onPress={() => { this.toggleModal(true) }}>
-              <Text style={styles.modalButton}>{"   " + modalClick + "  "} </Text>
-              
-            </TouchableOpacity> {/*button to open modal*/}<Text>{"\n\n\n"}</Text>
-          </Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+          <Text style={styles.timeGreeting}>{greeting}</Text>
+          <TouchableOpacity
+            onPress={() => { this.toggleModal(true) }}
+            style={{ paddingVertical: 20 }}>
+            <Text style={styles.modalButton}>{"   " + modalClick + "  "} </Text>
+          </TouchableOpacity>
+        </View>
 
-          {/*start modal handling, only if open*/}
-          <Modal
-            //animationType = {"slide"} transparent = {false}
-            visible={this.state.modalVisible}
-            onRequestClose={() => { console.log("Modal has been closed.") }}>
-            <ScrollView contentContainerStyle={styles.modal}>
-              {/*<Text style = {styles.modalOpen}>Pop Up Info Panel!</Text>*/}
-              <TouchableHighlight onPress={() => {
-                this.toggleModal(!this.state.modalVisible)
-              }}>
-                <Text style={styles.closeModal}>Back to Main Screen</Text>
-              </TouchableHighlight>
-              <Image style={styles.foodChart} source={FOODCHART1} />
-              <Image style={styles.foodChart} source={FOODCHART2} />
-              <Text style={styles.creditTo}>Source: The Krazy Coupon Lady</Text>
-            </ScrollView>
-          </Modal>{/* end modal handling*/}
-
-          {/* <TouchableOpacity 
-        onPress={() => {this.toggleModal(true)}}>
-        <Text style = {styles.modalButton}>Seasonal Produce</Text>
-      </TouchableOpacity> button to open modal */}
+        <Modal
+          //animationType = {"slide"} transparent = {false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.") }}>
+          <ScrollView contentContainerStyle={styles.modal}>
+            <TouchableHighlight onPress={() => {
+              this.toggleModal(!this.state.modalVisible)
+            }}>
+              <Text style={styles.closeModal}>Back to Main Screen</Text>
+            </TouchableHighlight>
+            <Image style={styles.foodChart} source={FOODCHART1} />
+            <Image style={styles.foodChart} source={FOODCHART2} />
+            <Text style={styles.creditTo}>Source: The Krazy Coupon Lady</Text>
+          </ScrollView>
+        </Modal>
 
 
-          <View style={styles.imageShareContainer}>
-            <View style={styles.uploadImageContainer}>
-              <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
-                <Ionicons
-                  name='md-image'
-                  size={45}
-                  color='#2F80ED'
-                  style={styles.photoPostIcon}
-                />
-                <Text style={styles.photoLabel}>Upload from library</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.uploadImageContainer}>
-              <TouchableOpacity onPress={() => this.getCameraAsync('camera')}>
-                <Ionicons
-                  name='ios-camera'
-                  size={45}
-                  color='#2F80ED'
-                  style={styles.photoPostIcon}
-                />
-                <Text style={styles.photoLabel}>Take a photo</Text>
-              </TouchableOpacity>
-
-            </View>
+        <View style={styles.imageShareContainer}>
+          <View style={styles.uploadImageContainer}>
+            <TouchableOpacity onPress={() => this.getCameraAsync('library')}>
+              <Ionicons
+                name='md-image'
+                size={45}
+                color='#2F80ED'
+                style={styles.photoPostIcon}
+              />
+              <Text style={styles.photoLabel}>Upload from library</Text>
+            </TouchableOpacity>
           </View>
+          <View style={styles.uploadImageContainer}>
+            <TouchableOpacity onPress={() => this.getCameraAsync('camera')}>
+              <Ionicons
+                name='ios-camera'
+                size={45}
+                color='#2F80ED'
+                style={styles.photoPostIcon}
+              />
+              <Text style={styles.photoLabel}>Take a photo</Text>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+        <View>
           {image &&
             <Tile
               imageSrc={{ uri: image.uri }}
@@ -168,8 +162,7 @@ export default class TakePictureScreen extends React.Component {
               onPress={() => navigate('RecognitionResult', { foodImage: image })}
             >
             </Tile>}
-        </ScrollView>
-
+        </View>
       </LinearGradient>
     )
   }
@@ -191,18 +184,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     // alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   timeGreeting: {
-    alignSelf: 'center',
+    // alignSelf: 'center',
     justifyContent: 'center',
     color: 'white',
     fontSize: 27,
     fontWeight: 'bold',
   },
   modalButton: {
-    alignSelf: 'center',
-    marginLeft: 30, //fix
+    // alignSelf: 'center',
     color: 'white',
     padding: 5,
     fontSize: 17,
@@ -240,6 +232,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   imageShareContainer: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',

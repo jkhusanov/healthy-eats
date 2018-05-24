@@ -175,7 +175,8 @@ export default class FoodRecipeScreen extends React.Component {
                   })
                   .then(result => console.log(result))
                   .catch(err => console.log(err));
-              }}>
+              }}
+              style= {{height: 35}}>
                 <Ionicons
                   name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
                   color={'#1ABC9C'}
