@@ -11,6 +11,7 @@ import FOODCHART1 from '../../assets/seasonal1.png';
 import FOODCHART2 from '../../assets/seasonal2.png';
 
 const { width } = Dimensions.get('window');
+console.ignoredYellowBox = ["Warning: Can't call setState",];
 
 export default class TakePictureScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -90,8 +91,8 @@ export default class TakePictureScreen extends React.Component {
     date = new Date();
     hour = date.getHours();
 
-    if ((hour => 12) && (hour < 18)) { greeting = "Good Afternoon! ☀️" }
-    else if (hour => 18) { greeting = "Good Evening! 🌙" }
+    if ((hour >= 12) && (hour < 18)) { greeting = "Good Afternoon! ☀️" }
+    else if (hour >= 18) { greeting = "Good Evening! 🌙" }
     else if (hour <= 11) { greeting = "Good Morning! 😊☀️" }
     modalClick = "What's in Season?"
     return (

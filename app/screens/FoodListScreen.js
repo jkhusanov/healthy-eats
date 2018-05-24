@@ -184,13 +184,16 @@ export default class FoodListScreen extends React.Component {
     const { foodImages, imagesLoaded } = this.state
     // console.log("loaded food", foodImages)
     if (foodImages != null && foodImages.length === 0) {
+      Alert.alert(
+        "Can't find",
+        "Please try to search manually in the above search bar",
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
       return (
         <View style={{flex: 1,}}>
-          {Alert.alert(
-            "Can't find food based on those ingredients",
-            "Please try to search manually in the above search bar",
-            { cancelable: false }
-          )}
 
           <SearchBar
             lightTheme

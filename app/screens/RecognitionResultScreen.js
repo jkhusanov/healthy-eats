@@ -6,6 +6,7 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import Clarifai from 'clarifai'
 
 const { width } = Dimensions.get('window');
+console.ignoredYellowBox = ["Warning: Can't call setState",];
 
 
 export default class RecognitionResultScreen extends React.Component {
