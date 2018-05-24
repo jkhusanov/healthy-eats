@@ -149,7 +149,7 @@ export default class FoodRecipeScreen extends React.Component {
             imageSrc={{ uri: food.images[0].hostedLargeUrl }}
             title={food.name}
             titleStyle={styles.nameLabel}
-            contentContainerStyle={{ height: 105 }}
+            contentContainerStyle={{flex: 1, justifyContent: 'space-between'}}
             activeOpacity={1}
             captionStyle={styles.foodCaptionStyle}
             imageContainerStyle={styles.imageStyle}
@@ -157,6 +157,7 @@ export default class FoodRecipeScreen extends React.Component {
 
           >
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{height: 35}}>
               <Rating
                 type="custom"
                 readonly
@@ -166,6 +167,7 @@ export default class FoodRecipeScreen extends React.Component {
                 imageSize={20}
                 style={{ marginVertical: 10 }}
               />
+              </View>
               <TouchableOpacity onPress={() => {
                 Share.share(
                   {
