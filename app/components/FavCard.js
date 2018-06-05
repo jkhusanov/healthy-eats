@@ -105,7 +105,7 @@ export default class FavCard extends React.Component {
             </Text>
           </View>
         </TouchableOpacity>
-        <View styles={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           {this.renderRemoveButton()}
         </View>
       </View>
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     height: 56,
     paddingRight: 0,
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? -1 : 11,
+    bottom: Platform.OS === 'ios' ? width/15 : width/14,
     right: padding,
   },
 });

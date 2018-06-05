@@ -14,7 +14,7 @@
 </p>
 
 #### Environment:
-React Native, with JavaScript, Visual Studios + ExpoXDE 
+React Native, with JavaScript, Visual Studio Code + Expo XDE 
 Additional library (package manager): npm
 
 ### [Demo - Try it on Expo](https://exp.host/@jkhusanov/healthy-eats)

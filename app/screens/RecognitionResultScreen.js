@@ -129,7 +129,7 @@ export default class RecognitionResultScreen extends React.Component {
        
         {foodImage &&
           <View style={styles.imageContainer}><Image source={{ uri: foodImage.uri }} style={styles.imageStyle} /></View>}
-        <View styles={styles.predictionContainer}>
+        <View style={styles.predictionContainer}>
           {this.renderPrediction()}
         </View>
         <Button
