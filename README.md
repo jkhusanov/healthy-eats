@@ -25,6 +25,9 @@ How to run the Demo on your phone:
 Note: If being tested on iPhone/iOS Expo will require log in/sign up, temporary login will be provided on the project documentation file.
 4. Please Note: If any trouble testing the app, please contact either team member via slack (@teodora)(@jahon) or email us.
 
+### Additional info
+Please checkout this [Chowin-Out repo](https://github.com/mobile-space/chowin-out) which is a standalone app and has some improved features of this app. 
+
 ### Demo and some screenshots
 
 ![demo_ios](https://github.com/jkhusanov/healthy-eats/blob/master/screenshots/Demo_iOS.gif)
