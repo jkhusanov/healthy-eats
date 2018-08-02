@@ -27,7 +27,7 @@ Note: If being tested on iPhone/iOS Expo will require log in/sign up, temporary 
 
 ### Demo and some screenshots
 
-![demo_ios](https://github.com/csc413-03-sp18/csc413-secondgame-Team20/blob/master/screenshots/Demo_iOS.gif)
+![demo_ios](https://github.com/jkhusanov/healthy-eats/blob/master/screenshots/Demo_iOS.gif)
 
 <div style={{display: flex; flex-direction: row}}>
   <img src="screenshots/1.png" width="270" />
