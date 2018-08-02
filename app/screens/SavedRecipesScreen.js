@@ -24,6 +24,7 @@ import { Button, Icon, Rating } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import FavCard from '../components/FavCard';
+import API_KEYS from '../utils/config_keys';
 
 
 export default class SavedRecipesScreen extends React.Component {
@@ -46,9 +47,9 @@ export default class SavedRecipesScreen extends React.Component {
       foodRecipe: null,
       API_URL: 'http://api.yummly.com',
       RES_SEARCH_URL: '/v1/api/recipe/',
-      APP_ID: 'eb4e23c7',
+      APP_ID: API_KEYS[1].app_id,
       RES_SEARCH_URL1: '&_app_key=',
-      API_KEY: '851038fb4920d6b523e47c79320c858e',
+      API_KEY: API_KEYS[1].key,
       parsedIds: null,
 
     };

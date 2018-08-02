@@ -17,6 +17,8 @@ import Carousel from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import FavSlide from '../components/FavSlide';
+import API_KEYS from '../utils/config_keys';
+
 
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -52,9 +54,9 @@ export default class FoodListScreen extends React.Component {
       foodImages: null,
       API_URL: 'http://api.yummly.com',
       RES_SEARCH_URL: '/v1/api/recipes?',
-      APP_ID: 'eb4e23c7',
+      APP_ID: API_KEYS[1].app_id,
       RES_SEARCH_URL1: '&_app_key=',
-      API_KEY: '851038fb4920d6b523e47c79320c858e',
+      API_KEY: API_KEYS[1].key,
       // search: null,
       allowedIngredient: ingredientsList || null,
       picture: '&requirePictures=true',

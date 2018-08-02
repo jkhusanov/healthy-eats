@@ -4,6 +4,7 @@ import { Button, Icon } from 'react-native-elements';
 import { ImagePicker, LinearGradient } from 'expo';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import Clarifai from 'clarifai'
+import API_KEYS from '../utils/config_keys';
 
 const { width } = Dimensions.get('window');
 console.ignoredYellowBox = ["Warning: Can't call setState",];
@@ -45,7 +46,7 @@ export default class RecognitionResultScreen extends React.Component {
     let responseJSON = null;
     let ingredients = []
 
-    const app = new Clarifai.App({ apiKey: 'a751e448217d4364a555a0e2d6d59006' });
+    const app = new Clarifai.App({ apiKey: API_KEYS[0].key });
     app.models.predict(Clarifai.FOOD_MODEL, { base64: foodImage.base64 }).then(
       async response => {
         // do something with response
